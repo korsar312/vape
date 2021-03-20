@@ -1,0 +1,20 @@
+{
+  "meh": [
+    { "id": 1000, "name": "meh#1", "author": "typicode" },
+    { "id": 1001, "name": "meh#2", "author": "typicode" },
+    { "id": 1002, "name": "meh#3", "author": "typicode" },
+    { "id": 1003, "name": "meh#4", "author": "typicode" }
+  ],
+  "pod": [
+    { "id": 2000, "name": "pod#1", "author": "typicode" },
+    { "id": 2001, "name": "pod#2", "author": "typicode" },
+    { "id": 2002, "name": "pod#3", "author": "typicode" },
+    { "id": 2003, "name": "pod#4", "author": "typicode" }
+  ],
+  "liquid": [
+    { "id": 3000, "name": "liquid#1", "author": "typicode" },
+    { "id": 3001, "name": "liquid#2", "author": "typicode" },
+    { "id": 3002, "name": "liquid#3", "author": "typicode" },
+    { "id": 3003, "name": "liquid#4", "author": "typicode" }
+  ]
+}
