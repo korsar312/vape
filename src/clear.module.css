@@ -367,3 +367,5 @@ textarea {
 body{
     background: rgb(246, 246, 246);
 }
+a:focus{outline:none;}
+a {outline:none;}

@@ -3,11 +3,11 @@
         <div className='main'>
             <div className='main_filtConteiner contaiter'>
                 <div className='shop_shop_filt_name'>
-                    <p>Фильтр</p>
+                    <p>Категории</p>
                 </div>
 
 
-                <router-link v-for="items in category" :key="items.id" :to="{name: items.link()}">
+                <router-link v-for="items in category" :key="items.id" :to="items.link()">
                     <div className='shop_shop_filt_category'>
                         <p>{{items.name()}}</p>
                         <span className='shop_shop_filt_category_main_arrow '></span>
@@ -36,12 +36,12 @@
 
                     </div>
                     <div className='main_mainConteiner_top_stock contaiter'>
-                        <h4>Акции</h4>
+                        <SailForTheDay/>
                     </div>
                 </div>
                 <div className='main_mainConteiner_mid'>
-                    <div className='main_mainConteiner_mid_sell contaiter'>
-                        <h4>Рекомендиции</h4>
+                    <div className='contaiter main_mainConteiner_mid_sell'>
+                        <RecommendationOfTheDay/>
                     </div>
                 </div>
                 <div className='main_mainConteiner_bot'>
@@ -63,7 +63,7 @@
                                     <H1>Корзина</H1>
                                 </div>
                                 <div className='main_mainConteiner_bot_acc_wrapper_mainBack_all'>
-                                    <p>Всего: {{totalPrice}} ₽</p>
+                                    <p>Всего товаров: {{totalItem}}шт.</p>
                                 </div>
                             </div>
                             <div className='main_mainConteiner_bot_acc_wrapper_img'>
@@ -112,6 +112,8 @@
     import 'vue3-carousel/dist/carousel.css';
     import {Carousel, Navigation, Pagination, Slide} from "vue3-carousel";
     import ButtonOrder from "../components/ButtonOrder";
+    import RecommendationOfTheDay from "../components/RecommendationOfTheDay";
+    import SailForTheDay from "../components/SailForTheDay";
 
 
     export default {
@@ -131,11 +133,13 @@
             lengthBasket(){
                 return this.$store.state.itemInBasket.length
             },
-            totalPrice(){
-                return this.$store.state.itemInBasket.reduce((sum, current)=>sum+=current.price,0)
+            totalItem(){
+                return this.$store.state.itemInBasket.reduce((sum, current)=>sum+= +current[1],0)
             }
         },
         components: {
+            SailForTheDay,
+            RecommendationOfTheDay,
             ButtonOrder,
             Carousel,
             Slide,
@@ -240,8 +244,10 @@ main{
 
             }
                 .main_mainConteiner_mid_sell{
-                    min-width: 500px;
-                    min-height: 200px;
+                }
+                .main_mainConteiner_mid_sell_name{
+                    margin: 5px 10px;
+                    text-align: center;
                 }
             .main_mainConteiner_bot{
                 display: flex;

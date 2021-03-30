@@ -5,8 +5,11 @@
 
 
         <div className="window">
-            <div style=" margin: 0 0 20px 0">
+            <div style=" margin: 0 0 20px 0; position: relative">
                 <span className=" contaiter name">{{item.name}}</span>
+                <div className="ButtonClose">
+                    <ButtonClose v-on:click="show()"/>
+                </div>
             </div>
 
             <div className="contaiter window">
@@ -35,6 +38,7 @@
                     <div className="id"><div>Артикул</div><div>{{item.id}}</div></div>
                 </div>
             </div>
+
         </div>
     </div>
 </template>
@@ -44,8 +48,10 @@
 
 
 <script>
+    import ButtonClose from "./ButtonClose";
     export default {
         name: "ItemOpen",
+        components: {ButtonClose},
         computed:{
             item(){
                 return this.$store.state.detailItem
@@ -109,6 +115,7 @@
         width: 400px;
         opacity: 1;
         z-index: 2;
+        position: relative;
     }
     .ras{
         margin: 15px;
@@ -121,6 +128,9 @@
         padding: 20px 15px 30px 15px;
         border-radius: 20px 20px 0px 00px;
         box-shadow: none;
+        z-index: 32;
+        position: relative;
+
     }
     .img{
         width: 100%;
@@ -157,5 +167,11 @@
     .id{
         text-align: center;
         font-size: 16pt;
+    }
+    .ButtonClose{
+        position: absolute;
+        top: -30px;
+        left: 0px;
+        z-index: 32;
     }
 </style>

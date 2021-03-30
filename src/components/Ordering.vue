@@ -4,15 +4,15 @@
         </div>
 
         <div className="contaiter window">
-            <form>
+            <form v-show="!choiceComplete">
                 <div style="text-align: center">
                     <H1>Форма</H1>
                 </div>
                 <div claccName="inputWrapper">
                     <H2>Ваши данные</H2>
                     <div className="input">
-                        <input name="phone" type="tel" className="contaiter inputSelfNumber inputValueO" placeholder="Телефон"/>
-                        <input name="name" type="text" className="contaiter inputSelfName inputValueO" placeholder="Имя"/>
+                        <input required autocomplete="tel" v-model="mobil" name="phone" type="tel" className="contaiter inputSelfNumber inputValueO" placeholder="Телефон"/>
+                        <input required autocomplete="name" name="name" type="text" className="contaiter inputSelfName inputValueO" placeholder="Имя"/>
                     </div>
                 </div>
                 <div>
@@ -26,11 +26,11 @@
                     <div className="contaiter">
                         <div className="mapWrapper" v-show="choice">
                             <div className="map">
-                                <input name="address-line1" type="text" className="contaiter adres adresVal inputValue" placeholder="Улица"/>
-                                <input name="address-line2" type="text" className="contaiter adres adresVal inputValue" placeholder="Дом"/>
-                                <input name="address-line3" type="text" className="contaiter adres adresVal inputValue" placeholder="Подъезд"/>
-                                <input name="address-line4" type="text" className="contaiter adres adresVal inputValue" placeholder="Квартира"/>
-                                <input name="address" type="text" className="contaiter adres inputValue" placeholder="Этаж"/>
+                                <input required autocomplete="address-level2" name="city" type="text" className="contaiter adres adresVal inputValue" placeholder="Город"/>
+                                <input required autocomplete="address-line1" name="address" type="text" className="contaiter adres adresVal inputValue" placeholder="Улица"/>
+                                <input required autocomplete="home" name="home" type="text" className="contaiter adres adresVal inputValue" placeholder="Дом"/>
+                                <input required autocomplete="entrance" name="" type="text" className="contaiter adres adresVal inputValue" placeholder="Подъезд"/>
+                                <input required autocomplete="address-line2" name="address-line2" type="text" className="contaiter adres adresVal inputValue" placeholder="Квартира"/>
                             </div>
                         </div>
                         <div className="mapWrapper" v-show="!choice">
@@ -51,10 +51,23 @@
                 </div>
                 <div className="sumbit">
                     <button className="contaiter buttun" v-on:click="sendRequest()" type="button">Заказать!</button>
-                    <p> <b>*Оплата</b> производится только по факту получения товара <b>наличным</b> или <b>безналичным</b> способом.</p>
+                    <p> <b>*Оплата</b> производится только по факту получения товара, <b>наличным</b> или <b>безналичным</b> способом.</p>
                 </div>
             </form>
+
+            <div className="HappyWrapper" v-if="choiceComplete">
+                <div className="weHappy">
+                    Нам дорог ваш заказ!
+                </div>
+                <div className="wrapperTrackNumber">
+                    Номер вашего заказа: <span className="trackNumber">{{numberOrder}}</span>
+                </div>
+            </div>
+            <div className="ButtonClose">
+                <ButtonClose v-on:click="show()"/>
+            </div>
         </div>
+
     </div>
 </template>
 
@@ -65,12 +78,34 @@
 <script>
 
 
+    import ButtonClose from "./ButtonClose";
     export default {
         name: "Ordering",
+        components: {ButtonClose},
         data(){
             return{
                 choice: true,
+                choiceComplete: false,
+                numberOrder: '',
+                mobil: '',
             }
+        },
+        watch: {
+            mobil: function(){
+                let word = this.mobil.split('').map(i=>{
+                    if(
+                        (i.charCodeAt() >= 40 && i.charCodeAt() <= 45) ||
+                        (i >= 0 && i <= 9) ||
+                        i.charCodeAt() == 32 ){
+                                return i}
+                }).join('')
+                this.mobil = word
+            }
+        },
+        computed: {
+            totalPrice() {
+                return this.$store.state.itemInBasket.reduce((s, c) => s += (c[0].price * c[1]), 0)
+            },
         },
         methods:{
             myChoice(a){
@@ -108,7 +143,6 @@
                     return
                 }
 
-                let totalPrice = 0
                 let name = document.body.querySelector('.inputSelfName').value
                 let number = "%2b" + document.body.querySelector('.inputSelfNumber').value
                 let typeDeliv = this.choice
@@ -124,21 +158,23 @@
                 message += " %0A" + " %0A"
 
                 for(let arrEl of this.$store.state.itemInBasket){
-                    totalPrice += arrEl.price
-                    for(let objEl in arrEl){
-                        if(Object.keys(this.$store.state.rename).includes(objEl)){
-                            message += `${this.$store.state.rename[objEl]}:  ${arrEl[objEl]}` + " %0A"
+                    for(let objEl in arrEl[0]){
+                        if(Object.keys(this.$store.state.renameForSend).includes(objEl)){
+                            message += `${this.$store.state.renameForSend[objEl]}:  ${arrEl[0][objEl]}` + " %0A"
                         }
                     }
-                    message += " %0A"
+                    message += `В количестве ${arrEl[1]} шт.` + " %0A %0A"
                 }
-                message += `Всего на сумму: ${totalPrice}`
+                message += `Всего на сумму: ${this.totalPrice}` + " %0A"
+                this.numberOrder = Math.round(Math.random()*10000000)
+                message += `                                                                  Номер заказа: ${this.numberOrder}`
 
                 let tok = `1662190836:AAGFJexo_sQVuUDszhnFMuLhBRPVwT_xuJ4`
                 let url = `https://api.telegram.org/bot${tok}/sendMessage?chat_id=-421133281&text=`
                 let xhttp = new XMLHttpRequest()
                 xhttp.open('GET',url + message, true)
                 xhttp.send()
+                this.choiceComplete = true
             },
         },
 
@@ -172,6 +208,8 @@
         height: 800px;
         opacity: 1;
         z-index: 2;
+        position: relative;
+        overflow: visible;
     }
     input{
         height: 40px;
@@ -253,4 +291,17 @@
         font-weight: 900;
         font-size: 110%;
     }
+    .HappyWrapper{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: 100%;
+    }
+    .ButtonClose{
+        position: absolute;
+        top: -10px;
+        right: -10px;
+    }
+
 </style>

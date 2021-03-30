@@ -1,6 +1,6 @@
 <template>
     <button className="contaiter wrapper" v-on:click="show">
-        Оформить
+        Оформить на сумму: {{totalPrice}} ₽
     </button>
 </template>
 
@@ -10,6 +10,11 @@
         methods:{
             show(){
                 this.$store.commit('show');
+            },
+        },
+        computed: {
+            totalPrice() {
+                return this.$store.state.itemInBasket.reduce((s, c) => s += (c[0].price * c[1]), 0)
             },
         },
     }

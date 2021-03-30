@@ -40,10 +40,10 @@
         methods:{
             innerCategor(){
                 let set = new Set()
-                this.item_data.items().forEach(i=>{
+                this.item_data.items.forEach(i=>{
                     set.add(i[this.categ_data[0]])
                 })
-                return set
+                return Array.from(set).sort((a,b)=>parseInt(b)-parseInt(a))
             },
             landCategor(e){
                 e.target.parentElement.querySelectorAll('.inner').forEach(i=>{i.classList.toggle('innerON')})

@@ -1,26 +1,24 @@
 <template>
     <div className='Catal_shop '>
         <div className='Catal_shop_shop'>
-            <div className='Catal_shop_shop_filt contaiter'>
+            <div className='contaiter Catal_shop_shop_filt'>
                 <div className='shop_shop_filt_name'>
                     <p>Фильтр</p>
                 </div>
-
-
-                <div className='Catal_shop_shop_filt_category '>
+                <div className='shop_shop_filt_category '>
                     <p className="p_text" v-on:click="e=>landCategor(e)">Цена</p>
 
                     <span className="Catal_shop_shop_filt_category_arrowON ">
                     </span>
-
-                    <div className="Catal_inner Catal_innerON">
-                        <span>от: </span><input className="contaiter Catal_contaiter2" type="number" min="100" step="any" />
-                    </div>
-                    <div className="Catal_inner Catal_innerON">
-                        <span>до: </span><input className="contaiter Catal_contaiter2" type="number" min="100" step="any" />
+                    <div class="wrapper_price">
+                        <div className="Catal_inner Catal_innerON">
+                            <span>от: </span><input v-model="lowPrice" className="contaiter Catal_contaiter2" type="number" min="100" step="any" />
+                        </div>
+                        <div className="Catal_inner Catal_innerON">
+                            <span>до: </span><input v-model="highPrice" className="contaiter Catal_contaiter2" type="number" min="100" step="any" />
+                        </div>
                     </div>
                 </div>
-
 
                 <Categor v-for="item in renderCateg"
                          :key="item"
@@ -28,7 +26,9 @@
                          :item_data="obj"
                 />
 
-                <button v-on:click="calcFiltObj()" className="contaiter" type="button">Поехали</button>
+                <button v-on:click="calcFiltObj()" className="contaiter beginFilt" type="button">Поехали</button>
+                <button v-on:click="clearFilt()" className="contaiter beginFilt" type="button">Сброс</button>
+
             </div>
 
             <div  className='contaiter Catal_shop_shop_item'>
@@ -53,15 +53,17 @@
 
 
     export default {
-        name: "Catalogue_liq",
+        name: "Catalogue",
         data() {
             return {
-                obj: this.$store.state.item.liquid,
+                obj: this.$store.state.item[this.$route.params.categor],
                 renderItem: [],
+                lowPrice: 0,
+                highPrice: 99999,
             }
         },
         mounted() {
-            this.renderItem = this.obj.items()
+            this.renderItem = this.obj.items
         },
         components: {
             Item,
@@ -76,19 +78,39 @@
                 e.target.parentElement.querySelector('.Catal_shop_shop_filt_category_arrowON').classList.toggle('Catal_shop_shop_filt_category_arrow')
             },
             calcFiltObj(){
-                this.renderItem.splice(0)
+                this.renderItem = []  //если ставить метод splice(0), то this.obj.items ничего не выдает 0_о
                 let arr = []
+
+                if(this.lowPrice == ''){this.lowPrice = 0}
+                if(this.highPrice == ''){this.highPrice = 99999}
+
                 document.body.querySelectorAll(".inputFilter").forEach(i=>{
                     if(i.checked) {
-                        this.obj.items().filter(j=>{
-                            if(j[i.name] == i.value){
+                        this.obj.items.filter(j=>{
+                            if(j[i.name] == i.value && j.price >= this.lowPrice && j.price <= this.highPrice){
                                 arr.push(j)
                             }
                         })
                     }
                 })
-                if(arr.length == 0){this.renderItem= this.obj.items().slice()}
-                else{this.renderItem = arr.slice()}
+                if(arr.length == 0){
+                    this.obj.items.filter(j=>{
+                        if(j.price >= this.lowPrice && j.price <= this.highPrice){
+                            arr.push(j)
+                        }
+                    })
+                }
+                this.renderItem = arr.slice()
+            },
+            clearFilt(){
+                this.lowPrice = 0
+                this.highPrice = 99999
+
+                document.body.querySelectorAll(".inputFilter").forEach(i=>{
+                    if(i.checked) {
+                        i.checked = false
+                    }
+                })
             },
         }
     }
@@ -98,34 +120,36 @@
 ========================================================================================================================
 
 
-<style>
+<style scoped>
     .Catal_shop{
         display: flex;
         Justify-content: center;
     }
     .Catal_shop_shop{
         min-width: 1140px;
-        min-height: 800px;
         display: flex;
+        min-height: 400px;
+        height: calc(100vh - 200px)
     }
     .Catal_shop_shop_filt{
         min-width: 300px;
-        min-height: 640px;
+        overflow: auto;
     }
 
     .Catal_shop_shop_item{
         min-width: 820px;
         width: 820px;
-        height: 965px;
         overflow: auto !important;
     }
-
-    .Catal_shop_shop_filt_category > p{
-        padding: 0px 0 0px 0px;
+    .shop_shop_filt_category{
+        position: relative;
+        padding: 0px 0px 0px 0px;
+    }
+    .shop_shop_filt_category > p{
         padding: 17px 0 17px 50px;;
         cursor: pointer;
     }
-    .Catal_shop_shop_filt_category:hover{
+    .shop_shop_filt_category:hover{
         cursor: auto;
     }
 
@@ -147,7 +171,7 @@
     }
 
     .Catal_inner{
-        height: 50px;
+        height: 60px;
         opacity: 1;
         transition: height ease-in-out 0.3s, opacity ease-in-out 0.3s 0.3s, margin ease-in-out 0.3s;
         margin: 5px 20px;
@@ -164,12 +188,27 @@
     .Catal_contaiter2{
         box-shadow: none;
         padding: 0 15px;
-        height: 20px;
+        height: 30px;
         border: 1px solid;
+        border-radius: 10px;
     }
     .Catal_wordpage{
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
+    }
+    .beginFilt{
+        height: 40px;
+        width: 130px;
+        color: white;
+        background: #fc8507;
+        border: none;
+        transition: ease-in-out 0.2s;
+    }
+    .beginFilt:hover{
+        transform: scale(0.97);
+    }
+    .beginFilt:active{
+        transform: scale(0.85);
     }
 </style>

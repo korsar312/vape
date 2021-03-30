@@ -1,6 +1,6 @@
 <template>
 
-  <Ordering v-show="show"/>
+  <Ordering v-if="show"/>
   <ItemOpen v-show="showDetail"/>
 
   <Header />
@@ -65,7 +65,6 @@ a{
 
   .contaiter{
     font-family: "Times New Roman","Helvetica","Arial",sans-serif;
-
     border-radius: 15px;
     margin: 10px 10px;
     box-shadow: 0px 0px 3px 1px rgba(34, 60, 80, 0.1);
