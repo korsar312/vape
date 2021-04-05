@@ -1,27 +1,41 @@
 <template>
-    <div style="position: relative">
-        <div className="contaiter wrapper">
-            <div v-for="item of renderCateg()" :key="item" className="param">
-                <span>{{item[0]}}: {{item[1]}}</span>
+    <div className="contaiter main">
+        <div className="wrap">
+            <div style="display: flex; align-items: center">
+                <img className="contaiter img" :src="require(`./img_item${render_Item.img}`)"/>
             </div>
-            <div className="param">
-                Количество: {{render_Item[1]}}
+            <div className="all">
+                <div v-on:click="showDetailItem()" className="contaiter name">
+                    <p>{{render_Item.name}}</p>
+                </div>
+                <div className="price">
+                    <div className="detail">Цена: {{render_Item.price}}</div>
+                </div>
+
             </div>
         </div>
-        <div className="ButtonClose">
-            <ButtonClose v-on:click="removeInBasket()"/>
+        <div v-on:click="removeInBasket()" className="buy buyR">
+            <div className="remove"></div>
+        </div>
+        <div className="buy buyD" v-on:click="(del())">
+            <div className="min"></div>
+        </div>
+        <div className="buy buyC">
+            <input className="current" v-model="amount"/>
+        </div>
+        <div className="buy buyA" v-on:click="(add())">
+            <div className="max"></div>
         </div>
     </div>
 </template>
 
 <script>
-    import ButtonClose from "./ButtonClose";
     export default {
         name: "ItemInBasket",
-        components: {ButtonClose},
         data(){
             return{
-
+                obj: this.render_Item,
+                amount: this.render_Item.amount,
             }
         },
         props:{
@@ -32,39 +46,144 @@
                 }
             },
         },
+        watch: {
+            amount: function(){
+                let word = String(this.amount).split('').map(i=>{
+                    if(i>=0 && i<=9){return i}
+                }).join('')
+                word == 0 ? word = 1 : ''
+                this.amount = Number(word)
+                this.obj.amount = Number(word)
+                this.$store.commit('setCookie');
+            }
+        },
         methods:{
             removeInBasket(){
                this.$store.dispatch('removeBasket', this.render_Item);
             },
-            renderCateg(){
-                let arr = []
-                for(let i in this.render_Item[0]){
-                    if(Object.keys(this.$store.state.rename).includes(i)){
-                        arr.push([this.$store.state.rename[i], this.render_Item[0][i]])
-                    }
-                 }
-                return arr
-            }
+            showDetailItem(){
+                this.$store.commit('showDetailItem', this.render_Item);
+            },
+            add(){
+                this.amount++
+            },
+            del(){
+                this.amount--
+            },
         },
     }
 </script>
 
 <style scoped>
-    .wrapper{
-        width: 265px;
-        transition: ease-in-out 0.5s;
+    .main{
+        display: flex;
+    }
+    .wrap{
+        background: #fc8507;
+        flex: 1;
+        display: flex;
+        transition: ease-in-out 0.6s;
+    }
+    .img{
+        height: 50px;
+        width: 62px;
+    }
+    .name{
+        padding: 3px;
+        text-align: center;
+        cursor: pointer;
+    }
+    .all{
+        flex: 1;
+    }
+    .price{
+        display: flex;
+        justify-content: left;
+    }
+    .detail{
+        text-align: center;
+        font-size: 12pt;
+        color: white;
+        padding: 0 0 5px 10px;
+    }
+    .buy{
+        border-left: 1px solid #eaeaea;
+        background: #fc8507;
+        transition: ease-in-out 0.3s;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         position: relative;
+        cursor: pointer;
+        padding: 5px;
 
     }
-    .wrapper:hover{
-        background: #b3d4fc;
+    .buy:hover{
+        background: lightskyblue;
     }
-    .param{
-        margin: 5px 10px;
+    .buy:active{
+        background: lightcoral;
     }
-    .ButtonClose{
-        position: absolute;
-        top: 0px;
-        right: 0px;
+    .buyC{
+        cursor: auto;
     }
+    .buyC:hover{
+        background: #fc8507;
+    }
+    .buyR:hover{
+        background: red;
+    }
+        .remove{
+            width: 16px;
+            height: 4px;
+            background: white;
+            position: relative;
+            transform: rotateZ(45deg);
+            border-radius: 10px;
+
+        }
+        .remove:after{
+            position: absolute;
+            left: 6px;
+            top: -6px;
+            content: "";
+            width: 4px;
+            height: 16px;
+            background: white;
+            border-radius: 10px;
+            border-radius: 10px;
+
+        }
+        .min{
+            width: 16px;
+            height: 4px;
+            background: white;
+            border-radius: 10px;
+
+        }
+        .current{
+            text-align: center;
+            width: 20px;
+            border-radius: 5px;
+            border: none;
+            padding: 5px;
+        }
+        .max{
+            width: 16px;
+            height: 4px;
+            background: white;
+            position: relative;
+            border-radius: 10px;
+
+        }
+        .max:after{
+            position: absolute;
+            left: 6px;
+            top: -6px;
+            content: "";
+            width: 4px;
+            height: 16px;
+            background: white;
+            border-radius: 10px;
+        }
 </style>

@@ -10,7 +10,12 @@
         </div>
         <div class="product-title">
             <a v-on:click="showDetailItem()">{{render_Item.name}}</a>
-            <span class="product-price">₽ {{render_Item.price}}</span>
+            <span v-if="!Object.prototype.hasOwnProperty.call(render_Item, 'discont')" class="product-price">₽ {{render_Item.price}}</span>
+            <div v-if="Object.prototype.hasOwnProperty.call(render_Item, 'discont')" class="product-price">
+                <div class="product-price1"> <strike>₽ {{render_Item.price}}</strike> </div>
+                <div class="product-price2">-{{render_Item.discont}}</div>
+                <div class="product-price3">₽ {{render_Item.price - (Math.round(render_Item.price / 100 * parseInt(render_Item.discont)))}}</div>
+            </div>
         </div>
     </div>
 </template>
@@ -20,6 +25,10 @@
 <script>
     export default {
         name: "Item",
+        data(){
+            return{
+            }
+        },
         props:{
             render_Item:{
                 type: Object,
@@ -34,7 +43,7 @@
             },
             showDetailItem(){
                 this.$store.commit('showDetailItem', this.render_Item);
-            }
+            },
         },
     }
 </script>
@@ -138,5 +147,19 @@
         font-size: 20px;
         color: #c0a97a;
         font-weight: 700;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .product-price1, .product-price3 {
+        flex: 1;
+    }
+    .product-price2{
+        font-size: 12pt;
+        flex: 0.5;
+    }
+    @media all and (max-width: 820px) {
+
+        
     }
 </style>

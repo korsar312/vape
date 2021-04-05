@@ -1,42 +1,58 @@
 <template>
     <div className='Catal_shop '>
         <div className='Catal_shop_shop'>
-            <div className='contaiter Catal_shop_shop_filt'>
-                <div className='shop_shop_filt_name'>
-                    <p>Фильтр</p>
-                </div>
-                <div className='shop_shop_filt_category '>
-                    <p className="p_text" v-on:click="e=>landCategor(e)">Цена</p>
+            <div class="contaiter Catal_shop_shop_filt" :class="{hideCateg: hideCateg}">
+                <div v-on:click="hideCateg=!hideCateg" className='main_filtConteiner1140'>
+                    <div class='main_filtConteinerConstruct' :class="{main_filtConteinerConstructOff: hideCateg}">
 
-                    <span className="Catal_shop_shop_filt_category_arrowON ">
-                    </span>
-                    <div class="wrapper_price">
-                        <div className="Catal_inner Catal_innerON">
-                            <span>от: </span><input v-model="lowPrice" className="contaiter Catal_contaiter2" type="number" min="100" step="any" />
-                        </div>
-                        <div className="Catal_inner Catal_innerON">
-                            <span>до: </span><input v-model="highPrice" className="contaiter Catal_contaiter2" type="number" min="100" step="any" />
-                        </div>
                     </div>
                 </div>
 
-                <Categor v-for="item in renderCateg"
-                         :key="item"
-                         :categ_data="item"
-                         :item_data="obj"
-                />
+                <div className='shop_shop_filt_name'>
+                    <p>Фильтр</p>
+                </div>
 
-                <button v-on:click="calcFiltObj()" className="contaiter beginFilt" type="button">Поехали</button>
-                <button v-on:click="clearFilt()" className="contaiter beginFilt" type="button">Сброс</button>
+                <div className='filtWrapperAdapt'>
+                    <div className='shop_shop_filt_category '>
+                        <p className="p_text" v-on:click="e=>landCategor(e)">Цена</p>
 
+                        <span className="Catal_shop_shop_filt_category_arrowON ">
+                        </span>
+                        <div class="wrapper_price">
+                            <div className="Catal_inner Catal_innerON">
+                                <span>от: </span><input v-model="lowPrice" className="contaiter Catal_contaiter2" type="number" min="100" step="any" />
+                            </div>
+                            <div className="Catal_inner Catal_innerON">
+                                <span>до: </span><input v-model="highPrice" className="contaiter Catal_contaiter2" type="number" min="100" step="any" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <Categor v-for="item in renderCateg"
+                             :key="item"
+                             :categ_data="item"
+                             :item_data="obj"
+                    />
+                </div>
+
+                <div class="filtAdapt">
+                    <button v-on:click="calcFiltObj()" className="contaiter beginFilt" type="button">Поехали</button>
+                    <button v-on:click="clearFilt()" className="contaiter beginFilt" type="button">Сброс</button>
+                </div>
             </div>
 
-            <div  className='contaiter Catal_shop_shop_item'>
-                <div className="Catal_wordpage">
+            <div class="adapt contaiter">
+                <p>{{obj.name()}}</p>
+            </div>
+
+            <div  className='contaiter '>
+                <div className="Catal_wordpage Catal_shop_shop_item">
+
                     <Item v-for="item in renderItem"
                           :key="item"
                           :render_Item="item"
                     />
+
                 </div>
             </div>
         </div>
@@ -56,7 +72,7 @@
         name: "Catalogue",
         data() {
             return {
-                obj: this.$store.state.item[this.$route.params.categor],
+                hideCateg: true,
                 renderItem: [],
                 lowPrice: 0,
                 highPrice: 99999,
@@ -65,12 +81,20 @@
         mounted() {
             this.renderItem = this.obj.items
         },
+        watch: {
+            '$route.params.categor'() {
+                if(this.$route.path.includes('/catalogue/')){
+                    this.renderItem = this.obj.items
+                }
+            },
+        },
         components: {
             Item,
             Categor
         },
         computed:{
             renderCateg(){return this.obj.categ()},
+            obj(){return this.$store.state.item[this.$route.params.categor]},
         },
         methods:{
             landCategor(e){
@@ -121,24 +145,26 @@
 
 
 <style scoped>
+    .adapt{
+        display: none;
+    }
     .Catal_shop{
         display: flex;
         Justify-content: center;
     }
     .Catal_shop_shop{
-        min-width: 1140px;
         display: flex;
         min-height: 400px;
         height: calc(100vh - 200px)
     }
     .Catal_shop_shop_filt{
-        min-width: 300px;
         overflow: auto;
     }
 
     .Catal_shop_shop_item{
-        min-width: 820px;
         width: 820px;
+        min-height: 400px;
+        height: calc(100vh - 220px);
         overflow: auto !important;
     }
     .shop_shop_filt_category{
@@ -205,10 +231,95 @@
         border: none;
         transition: ease-in-out 0.2s;
     }
+    .filtAdapt{
+        display: flex;
+        justify-content: center;
+    }
     .beginFilt:hover{
         transform: scale(0.97);
     }
     .beginFilt:active{
         transform: scale(0.85);
+    }
+    @media all and (max-width: 1140px) {
+        .Catal_shop_shop_filt {
+            position: fixed;
+            border-radius: 0 40px 40px 0;
+            min-height: 450px;
+            height: 450px;
+            min-width: 230px;
+            top: calc(50% - 225px);
+            left: 0;
+            margin: 0;
+            z-index: 2;
+            overflow: visible;
+            transition: ease-in-out 0.3s;
+        }
+        .hideCateg{
+            left: -230px;
+        }
+        .main_filtConteiner1140{
+            display: block;
+            position: absolute;
+            border-radius: 50%;
+            top: calc(50% - 28px);
+            right: -30px;
+            width: 50px;
+            height: 50px;
+            background: #fc8507;
+            border: 6px solid #fff;
+            cursor: pointer;
+            z-index: 100;
+        }
+        .main_filtConteinerConstruct{
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            left: calc(50% - 7px);
+            top: calc(50% - 12px);
+            border-right: 4px solid white;
+            border-top: 4px solid white;
+            transform: rotateZ(-135deg);
+            transition: ease-in-out 0.3s;
+        }
+        .main_filtConteinerConstructOff{
+            left: calc(50% - 10px);
+            transform: rotateZ(-135deg) scale(-1, -1);
+        }
+        .filtAdapt{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .filtWrapperAdapt{
+            overflow: auto;
+            height: 270px;
+            width: 230px;
+        }
+        .Catal_contaiter2{
+            width: 150px;
+        }
+    }
+    @media all and (max-width: 820px) {
+        .Catal_shop_shop {
+            width: calc(100vw - 5px);
+            height: calc(100vh - 5px);
+            display: block;
+        }
+
+        .Catal_shop_shop_item {
+            width: calc(100vw - 5px);
+            height: calc(100vh - 5px);
+        }
+        .adapt{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 50px;
+            font-size: 17pt
+        }
+        .Catal_shop_shop_item{
+            display: block;
+        }
     }
 </style>

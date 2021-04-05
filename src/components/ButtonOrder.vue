@@ -14,7 +14,7 @@
         },
         computed: {
             totalPrice() {
-                return this.$store.state.itemInBasket.reduce((s, c) => s += (c[0].price * c[1]), 0)
+                return this.$store.state.itemInBasket.reduce((s, c) => s += (c.price * c.amount), 0)
             },
         },
     }
@@ -28,5 +28,10 @@
         margin: 5px 20px;
         background: #fc8507;
         border: none;
+    }
+    @media all and (max-width: 820px) {
+        .wrapper{
+            width: calc(100vw - 80px);
+        }
     }
 </style>

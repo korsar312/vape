@@ -2,7 +2,7 @@
     <div style="display: flex; justify-content: center">
 
 
-        <carousel :settings="settings"  style="width: 820px;">
+        <carousel :settings="settings" :breakpoints="breakpoints" style="width: 820px;">
             <slide v-for="slide in renderItem" :key="slide">
 
                 <Item :render_Item="slide" />
@@ -19,7 +19,6 @@
 
 <script>
     import Item from "./Item";
-    import 'vue3-carousel/dist/carousel.css';
     import {Carousel, Navigation, Slide} from "vue3-carousel";
 
     export default {
@@ -35,9 +34,13 @@
                 settings: {
                     itemsToShow: 4,
                     snapAlign: 'left',
-                    wrapAround: true,
                     transition: 1000,
                 },
+                breakpoints: {
+                    300:{
+                        itemsToShow: 4,
+                    }
+                }
             }
         },
         computed: {
@@ -67,4 +70,9 @@
     .product-wrap {
         min-height:210px;
     }
+
+
+
+
+
 </style>

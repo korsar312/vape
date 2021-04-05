@@ -5,7 +5,7 @@
 
 
         <div className="window">
-            <div style=" margin: 0 0 20px 0; position: relative">
+            <div className="nameWindow">
                 <span className=" contaiter name">{{item.name}}</span>
                 <div className="ButtonClose">
                     <ButtonClose v-on:click="show()"/>
@@ -13,7 +13,7 @@
             </div>
 
             <div className="contaiter window">
-                <div className="ras">
+                <div className="ras wrapImg">
                     <img className="contaiter img" v-if="showDetail()" :src="require(`./img_item${item.img}`)"/>
                 </div>
                 <div className="ras param">
@@ -33,7 +33,16 @@
                      <span>{{item.descript}}</span>
                 </div>
                 <div className="ent2">
-                    <div className="price"><div>Стоимость</div><div>{{item.price}} ₽</div></div>
+                    <div className="price">
+                        <div>Стоимость</div>
+
+                        <div v-if="!Object.prototype.hasOwnProperty.call(item, 'discont')">₽ {{item.price}}</div>
+                        <div v-if="Object.prototype.hasOwnProperty.call(item, 'discont')">
+                            <div> <strike>₽ {{item.price}}</strike> </div>
+                            <div>₽ {{item.price - (Math.round(item.price / 100 * parseInt(item.discont)))}}</div>
+                        </div>
+
+                    </div>
                     <div className="spaces"></div>
                     <div className="id"><div>Артикул</div><div>{{item.id}}</div></div>
                 </div>
@@ -102,7 +111,7 @@
 
         width: 100%;
         height: 100%;
-        z-index: 10;
+        z-index: 100;
     }
     .back{
         width: 100%;
@@ -174,4 +183,52 @@
         left: 0px;
         z-index: 32;
     }
+    .nameWindow{
+        margin: 0 0 20px 0;
+        position: relative
+    }
+
+    @media all and (max-width: 820px) {
+        .wrapper{
+            margin: 0px
+        }
+        .window{
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            border-radius: 0;
+            overflow: auto;
+        }
+        .nameWindow{
+            margin: 0;
+        }
+        .name{
+            position: absolute;
+            top:0;
+            right: 30px;
+            border-radius: 0 0 0 20px;
+            margin: 0;
+            padding: 15px 15px 10px 10px;
+            font-size: 5vw;
+        }
+        .img{
+            width: 70vw;
+            background-size:contain;
+            align-self: flex-start;
+        }
+        .wrapImg{
+            display: flex;
+            justify-content: center;
+            height: auto;
+        }
+        .ButtonClose{
+            position: fixed;
+            display: flex;
+            justify-content: right;
+            top: 0px;
+            left: calc(100vw - 35px);
+        }
+
+    }
+
 </style>

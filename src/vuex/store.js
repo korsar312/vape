@@ -16,6 +16,7 @@ const store = createStore({
                 'brightness': 'Жжение',
                 'Brightness': 'Яркость вкуса',
                 'type': 'Тип',
+                'discont': 'Скидка',
             },
             renameForSend: {
                 'name': 'Имя',
@@ -28,6 +29,7 @@ const store = createStore({
                 'id': 'Артикул',
                 'material': 'Материал',
                 'type': 'Тип',
+                'discont': 'Скидка',
             },
             detailItem: {},
             showOrdering: false,
@@ -619,10 +621,32 @@ const store = createStore({
                 },
             },
             itemInBasket:[],
+            itemDiscont:[],
             itemInSearch:[]
         }
     },
     mutations: {
+        sailForToday(state){
+            function mulberry32(a) {
+                return function() {
+                    let t = a += 0x6D2B79F5;
+                    t = Math.imul(t ^ t >>> 15, t | 1);
+                    t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+                    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+                }
+            }
+
+            let date = new Date()
+            let date1 = '' + (date.getFullYear()+100) + date.getMonth() + date.getDate()
+            let date2 = date1
+            let allItems = Object.values((state.item)).map(i=>i.items).flat().sort(()=>mulberry32(--date1)()-mulberry32(++date2)())
+            allItems.splice(4)
+            allItems.forEach(i=>{
+                i.discont = '15%'
+                state.itemDiscont.push(i)
+            })
+        },
+
         show(state){
             state.showOrdering = !state.showOrdering
         },
@@ -637,24 +661,26 @@ const store = createStore({
         addBasket(state, item){
             let bas = state.itemInBasket
             for(let i in bas){
-                if(bas[i][0] == item){
-                    bas[i][1]++
+                if(bas[i] == item){
+                    item.amount++
                     return
                 }
             }
-            bas.push([item, 1])
+            item.amount = 1
+            bas.push(item)
         },
         removeBasket(state, item){
             let bas = state.itemInBasket
             for(let i in bas){
                 if(bas[i] == item){
+                    delete bas.amount
                     bas.splice(i,1)
                     break
                 }
             }
         },
         setCookie(state){
-            document.cookie = ("Basket=" + state.itemInBasket.map(i=>`${i[0].id}:${i[1]}`)) + 'endBasket; path=/; max-age=100000'
+            document.cookie = ("Basket=" + state.itemInBasket.map(i=>`${i.id}:${i.amount}`)) + 'endBasket; path=/; max-age=100000'
         },
         getCookie(state){
             let starsCookie = document.cookie.indexOf('Basket=') + 7
@@ -674,7 +700,10 @@ const store = createStore({
 
             for(let i of cookie){
                 for(let j of arr){
-                    i.split(':')[0] == j.id ? state.itemInBasket.push([j,i.split(':')[1]]) : ''
+                    if(i.split(':')[0] == j.id){
+                        state.itemInBasket.push(j)
+                        j.amount = i.split(':')[1]
+                    }
                 }
             }
         },

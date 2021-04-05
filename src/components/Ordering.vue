@@ -5,7 +5,7 @@
 
         <div className="contaiter window">
             <form v-show="!choiceComplete">
-                <div style="text-align: center">
+                <div style="text-align: center; margin: 10px">
                     <H1>Форма</H1>
                 </div>
                 <div claccName="inputWrapper">
@@ -34,9 +34,9 @@
                             </div>
                         </div>
                         <div className="mapWrapper" v-show="!choice">
-                            <div className="map">
+                            <div className="map googleMap">
                                 <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2078.5467911892047!2d49.67807751058962!3d58.60314582815016!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x189b906e70213aa8!2zVmFwZSBTaG9wINCf0J7Qn9CQ0KDQmNCc!5e0!3m2!1sru!2sru!4v1615914372601!5m2!1sru!2sru"
-                                        width="540" height="200" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                                        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
                             </div>
                             <div className="selfAdress contaiter">
                                 <p>г.Киров ул.Свободы 70</p>
@@ -104,7 +104,7 @@
         },
         computed: {
             totalPrice() {
-                return this.$store.state.itemInBasket.reduce((s, c) => s += (c[0].price * c[1]), 0)
+                return this.$store.state.itemInBasket.reduce((s, c) => s += (c.price * c.amount), 0)
             },
         },
         methods:{
@@ -158,12 +158,12 @@
                 message += " %0A" + " %0A"
 
                 for(let arrEl of this.$store.state.itemInBasket){
-                    for(let objEl in arrEl[0]){
+                    for(let objEl in arrEl){
                         if(Object.keys(this.$store.state.renameForSend).includes(objEl)){
-                            message += `${this.$store.state.renameForSend[objEl]}:  ${arrEl[0][objEl]}` + " %0A"
+                            message += `${this.$store.state.renameForSend[objEl]}:  ${arrEl[objEl]}` + " %0A"
                         }
                     }
-                    message += `В количестве ${arrEl[1]} шт.` + " %0A %0A"
+                    message += `В количестве ${arrEl.amount} шт.` + " %0A %0A"
                 }
                 message += `Всего на сумму: ${this.totalPrice}` + " %0A"
                 this.numberOrder = Math.round(Math.random()*10000000)
@@ -194,7 +194,7 @@
 
         width: 100%;
         height: 100%;
-        z-index: 10;
+        z-index: 101;
     }
     .back{
         width: 100%;
@@ -302,6 +302,49 @@
         position: absolute;
         top: -10px;
         right: -10px;
+    }
+    @media all and (max-width: 820px) {
+        .wrapper{
+        }
+        .window{
+            width: 100%;
+            height: 100%;
+            margin: -20px 0 0 0;
+            border-radius: 0;
+        }
+        form{
+            display: flex;
+            flex-direction: column;
+            height: calc(100% - 5px);
+            overflow: auto;
+            margin: 5px;
+        }
+        .mapWrapper{
+            overflow: auto;
+        }
+        .sumbit{
+            margin: 0 0 10px 0;
+            flex-direction: column;
+            align-items: center;
+        }
+        .buttun{
+            margin: 5px;
+            min-width: 85px;
+        }
+        h2{
+            text-align: center;
+        }
+        .googleMap{
+            height: 100%;
+        }
+        .close{
+            top: 10px;
+            right: 10px;
+        }
+        .comment{
+            width: calc(100vw - 120px);
+            height: 100px;
+        }
     }
 
 </style>

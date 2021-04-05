@@ -3,14 +3,12 @@
   <Ordering v-if="show"/>
   <ItemOpen v-show="showDetail"/>
 
+
   <Header />
 
   <router-view>
 
   </router-view>
-
-
-
 
 </template>
 
@@ -42,6 +40,7 @@
   },
   mounted() {
     this.$store.commit("getCookie")
+    this.$store.commit("sailForToday")
   },
   components: {
     ItemOpen,
@@ -86,5 +85,50 @@ a{
 
 
 
+  .carousel__item {
+    min-height: 200px;
+    width: 100%;
+    background-color: var(--carousel-color-primary);
+    color:  var(--carousel-color-white);
+    font-size: 20px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .carousel__slide {
+  }
+
+  .carousel__pagination{
+    position: absolute;
+    margin: -20px auto;
+    width: 100%;
+  }
+
+  .carousel__prev,
+  .carousel__next {
+    box-sizing: content-box;
+    border: 1px solid white;
+    margin: 0px 20px;
+    background: #fc8507;
+  }
+
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, .1);
+
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 50, .5);
+    border-radius: 10px;
+    box-shadow:0 0 0 1px rgba(255, 255, 255, .3);
+
+  }
 
 </style>

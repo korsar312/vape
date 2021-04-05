@@ -3,6 +3,7 @@ import Main from '../Page/Main'
 import Basket from '../Page/Basket'
 import Catalogue from "../Page/Catalogue";
 import Search from "../Page/Search";
+import Delivery from "../Page/Delivery";
 
 const routes = [
     {
@@ -24,6 +25,11 @@ const routes = [
         path: '/basket',
         name: 'basket',
         component: Basket,
+    },
+    {
+        path: '/delivery',
+        name: 'delivery',
+        component: Delivery,
     },
 ];
 
