@@ -1,5 +1,5 @@
 <template>
-    <div className='Catal_shop '>
+    <div className='centerLight Catal_shop '>
         <div className='Catal_shop_shop'>
             <div class="contaiter Catal_shop_shop_filt" :class="{hideCateg: hideCateg}">
                 <div v-on:click="hideCateg=!hideCateg" className='main_filtConteiner1140'>
@@ -35,7 +35,7 @@
                     />
                 </div>
 
-                <div class="filtAdapt">
+                <div class="centerLight filtAdapt">
                     <button v-on:click="calcFiltObj()" className="contaiter beginFilt" type="button">Поехали</button>
                     <button v-on:click="clearFilt()" className="contaiter beginFilt" type="button">Сброс</button>
                 </div>
@@ -45,14 +45,12 @@
                 <p>{{obj.name()}}</p>
             </div>
 
-            <div  className='contaiter '>
-                <div className="Catal_wordpage Catal_shop_shop_item">
-
+            <div class="contaiter">
+                <div className="centerLight Catal_wrap">
                     <Item v-for="item in renderItem"
                           :key="item"
                           :render_Item="item"
                     />
-
                 </div>
             </div>
         </div>
@@ -148,9 +146,12 @@
     .adapt{
         display: none;
     }
-    .Catal_shop{
-        display: flex;
-        Justify-content: center;
+    .Catal_wrap{
+        width: 820px;
+        min-height: 400px;
+        height: calc(100vh - 220px);
+        overflow: auto;
+        flex-wrap: wrap;
     }
     .Catal_shop_shop{
         display: flex;
@@ -159,13 +160,6 @@
     }
     .Catal_shop_shop_filt{
         overflow: auto;
-    }
-
-    .Catal_shop_shop_item{
-        width: 820px;
-        min-height: 400px;
-        height: calc(100vh - 220px);
-        overflow: auto !important;
     }
     .shop_shop_filt_category{
         position: relative;
@@ -218,11 +212,6 @@
         border: 1px solid;
         border-radius: 10px;
     }
-    .Catal_wordpage{
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
     .beginFilt{
         height: 40px;
         width: 130px;
@@ -230,10 +219,6 @@
         background: #fc8507;
         border: none;
         transition: ease-in-out 0.2s;
-    }
-    .filtAdapt{
-        display: flex;
-        justify-content: center;
     }
     .beginFilt:hover{
         transform: scale(0.97);
@@ -287,9 +272,10 @@
             transform: rotateZ(-135deg) scale(-1, -1);
         }
         .filtAdapt{
-            display: flex;
             flex-direction: column;
-            align-items: center;
+        }
+        .beginFilt{
+            width: auto;
         }
         .filtWrapperAdapt{
             overflow: auto;
@@ -301,15 +287,12 @@
         }
     }
     @media all and (max-width: 820px) {
-        .Catal_shop_shop {
-            width: calc(100vw - 5px);
-            height: calc(100vh - 5px);
-            display: block;
+        .Catal_wrap {
+            width: calc(100vw - 25px);
+            height: calc((var(--vh, 1vh) * 100) - 135px);
         }
-
-        .Catal_shop_shop_item {
-            width: calc(100vw - 5px);
-            height: calc(100vh - 5px);
+        .Catal_shop_shop {
+            display: block;
         }
         .adapt{
             display: flex;
@@ -318,8 +301,6 @@
             height: 50px;
             font-size: 17pt
         }
-        .Catal_shop_shop_item{
-            display: block;
-        }
+
     }
 </style>

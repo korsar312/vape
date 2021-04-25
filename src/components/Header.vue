@@ -93,15 +93,71 @@
         </div>
     </header>
 
-    <nav className="contaiter headerMob">
-        <input className="clickMenu" type="checkbox"/>
+    <nav className="headerMob" v-show="!($store.state.showOrdering || $store.state.showDetailItem)">
+        <div class="hederHub" v-on:click="showFunc()">
+            <router-link class="centerFull rout" :to="{name: 'main'}">
+                <div class="centerFull hederHub_ico">
+                    <svg style="width: 25px; height: 25px;" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                        <title/><g id="Fill"><path d="M18.12,2.88a3.08,3.08,0,0,0-4.24,0L1.29,15.46l1.42,1.42L5,14.59V27a3,3,0,0,0,3,3H24a3,3,0,0,0,
+                        3-3V14.59l2.29,2.29,1.42-1.42ZM14,28V21h4v7Zm11-1a1,1,0,0,1-1,1H20V19H12v9H8a1,1,0,0,1-1-1V12.59l8.29-8.3a1,1,0,0,1,1.42,0L25,12.59Z"/></g>
+                    </svg>
+                </div>
+                Главная
+            </router-link>
+        </div>
 
-        <div className="contaiter menu">
-            <div class="categ">
-                <div className="search_wrap search_wrapAdapt">
-                    <input v-on:keyup.enter="search()" placeholder="Поиск по сайту" className="header_forSite_search header_forSite_searchAdapt" type="search" v-on:keydown="validInput" v-model="message"/>
+        <div class="hederHub">
+            <div v-on:click="showFunc('showCategor')" class="rout centerFull">
+                <div class="centerFull hederHub_ico">
+                    <svg data-name="Layer 2" style="width: 20px; height: 20px;" viewBox="0 0 35 35" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M11.933,15.055H3.479A3.232,3.232,0,0,1,.25,11.827V3.478A3.232,3.232,0,0,1,3.479.25h8.454a3.232,3.232,0,0,1,3.228,3.228v8.349A3.232,3.232,0,0,1,11.933,15.055ZM3.479,2.75a.73.73,0,
+                        0,0-.729.728v8.349a.73.73,0,0,0,.729.728h8.454a.729.729,0,0,0,.728-.728V3.478a.729.729,0,0,0-.728-.728Z"/><path d="M11.974,34.75H3.52A3.233,3.233,0,0,1,.291,31.521V23.173A3.232,3.232,0,0,
+                        1,3.52,19.945h8.454A3.232,3.232,0,0,1,15.2,23.173v8.348A3.232,3.232,0,0,1,11.974,34.75ZM3.52,22.445a.73.73,0,0,0-.729.728v8.348a.73.73,0,0,0,.729.729h8.454a.73.73,0,0,0,.728-.729V23.173a.729.729,0,0,0-.728-.728Z"/>
+                        <path d="M31.522,34.75H23.068a3.233,3.233,0,0,1-3.229-3.229V23.173a3.232,3.232,0,0,1,3.229-3.228h8.454a3.232,3.232,0,0,1,3.228,3.228v8.348A3.232,3.232,0,0,1,31.522,34.75Zm-8.454-12.3a.73.73,0,0,0-.729.728v8.348a.73.73,0,0,0,
+                    .729.729h8.454a.73.73,0,0,0,.728-.729V23.173a.729.729,0,0,0-.728-.728Z"/><path d="M27.3,15.055a7.4,7.4,0,1,1,7.455-7.4A7.437,7.437,0,0,1,27.3,15.055Zm0-12.3a4.9,4.9,0,1,0,4.955,4.9A4.935,4.935,0,0,0,27.3,2.75Z"/>
+                    </svg>
+                </div>
+                Категории
+            </div>
 
-                    <svg v-on:click="search()" class="search_ico search_icoAdapt" enable-background="new 0 0 64 64" height="32px" id="Icons" version="1.1" viewBox="0 0 64 64" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <div class="categorAdapt" :class="{openClass: show.showCategor}">
+              <router-link v-for="items in $store.state.item" :key="items.id" :to="items.link()">
+                  <div v-on:click="showFunc()" className='thisCategor'>
+                      <p>{{items.name()}}</p>
+                  </div>
+              </router-link>
+            </div>
+        </div>
+
+        <div class="hederHub" v-on:click="showFunc()">
+            <router-link class="centerFull rout" :to="{name: 'basket'}">
+                <div class="centerFull hederHub_ico">
+                    <svg style="width: 25px; height: 25px;" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><title/><g id="Fill"><path d="M10,24a3,3,0,1,0,3,3A3,3,0,0,0,10,24Zm0,4a1,1,0,1,1,1-1A1,1,0,0,1,10,28Z"/>
+                        <path d="M22,24a3,3,0,1,0,3,3A3,3,0,0,0,22,24Zm0,4a1,1,0,1,1,1-1A1,1,0,0,1,22,28Z"/><path d="M6.78,6,6.35,4.27A3,3,0,0,0,3.44,2H2V4H3.44a1,1,0,0,1,1,.76L8,19.24H8l.37,1.49A3,3,0,0,
+                    0,11.31,23H25V21H11.31a1,1,0,0,1-1-.76l-.12-.5L25,16.25a3,3,0,0,0,2.23-2.19l2-8.06Zm18.55,7.58a1,1,0,0,1-.75.73L9.73,17.8,7.28,8H26.72Z"/></g>
+                    </svg>
+                </div>
+                Корзина
+            </router-link>
+        </div>
+
+        <div class="hederHub">
+
+            <div v-on:click="showFunc('showMore')" class="rout centerFull">
+                <div class="centerFull hederHub_ico">
+                    <svg style="width: 25px; height: 25px;" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><title/>
+                        <g id="Fill"><path d="M16,13a3,3,0,1,0,3,3A3,3,0,0,0,16,13Zm0,4a1,1,0,1,1,1-1A1,1,0,0,1,16,17Z"/>
+                        <path d="M24,13a3,3,0,1,0,3,3A3,3,0,0,0,24,13Zm0,4a1,1,0,1,1,1-1A1,1,0,0,1,24,17Z"/><path d="M8,13a3,3,0,1,0,3,3A3,3,0,0,0,8,13Zm0,4a1,1,0,1,1,1-1A1,1,0,0,1,8,17Z"/></g>
+                    </svg>
+                </div>
+                Ещё
+            </div>
+
+            <div class="categorAdapt" :class="{openClass: show.showMore}">
+                <div className="search_wrap">
+                    <input v-on:keyup.enter="search()" placeholder="Поиск по сайту" className="header_forSite_search" type="search" v-on:keydown="validInput" v-model="message"/>
+
+                    <svg v-on:click="search()" class="search_ico" enable-background="new 0 0 64 64" height="32px" id="Icons" version="1.1" viewBox="0 0 64 64" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <g><g><path d="M58,52L44,38c-0.583-0.583-1.292-0.875-2-0.875c-0.253,0-0.503,0.051-0.75,0.125l-1.979-1.979
                             C41.604,32.116,43,28.227,43,24c0-10.495-8.505-19-19-19S5,13.505,5,24s8.505,19,19,19c4.226,0,8.116-1.396,11.271-3.729
                             l1.979,1.979C36.968,42.189,37.209,43.209,38,44l14,14c0.583,0.583,1.292,0.875,2,0.875s1.417-0.292,2-0.875l2-2
@@ -117,45 +173,12 @@
                             c-8.284,0-15-6.716-15-15S15.716,9,24,9s15,6.716,15,15S32.284,39,24,39z" fill="#37474F"/></g></g></g>
                         </svg>
                 </div>
-
-
-                <div class="categWrap">
-                    <router-link :to="'/'">
-                        <div class="categPerson">
-                            <span>Главная</span>
-                        </div>
-                    </router-link>
-                    <router-link :to="'/delivery'">
-                        <div class="categPerson">
-                            <span>Доставка</span>
-                        </div>
-                    </router-link>
-                    <router-link :to="'/basket'">
-                        <div class="categPerson">
-                            <span>Корзина {{$store.state.itemInBasket.length}}шт.</span>
-                        </div>
-                    </router-link>
-                    <router-link :to="'/search/…'">
-                        <div class="categPerson">
-                            <span>Весь товар</span>
-                        </div>
-                    </router-link>
-
-                    <ul>
-                        <router-link v-for="items in $store.state.item" :key="items.id" :to="items.link()">
-                            <div className='categPerson categPersonCateg'>
-                                <li>{{items.name()}}</li>
-                            </div>
-                        </router-link>
-                    </ul>
-
-                </div>
+                <router-link :to="{ name: `delivery` }">
+                    <div v-on:click="showFunc()" className='thisCategor'>
+                        <p>Доставка</p>
+                    </div>
+                </router-link>
             </div>
-        </div>
-
-        <div  className="constraction1">
-        </div>
-        <div  className="constraction2">
         </div>
     </nav>
 
@@ -176,6 +199,10 @@
         data() {
             return {
                 message: '',
+                show:{
+                    showCategor: false,
+                    showMore: false,
+                },
             }
         },
         watch: {
@@ -187,6 +214,12 @@
             }
         },
         methods:{
+            showFunc(show = null){
+                for(let i in this.show){
+                    if (show != i){this.show[i] = false}
+                    else if (show == i){this.show[i] = !this.show[i]}
+                }
+            },
             validSym(sym, val){
                 if(
                     (sym.charCodeAt() < 65 ||
@@ -210,6 +243,7 @@
                 return true
             },
             search(){
+                this.showFunc()
                 if (this.message == ''){
                     this.$router.push({ path: `/search/…` })
                     return
@@ -346,103 +380,77 @@ header{
     .header{
         display: none;
     }
-
-    .search_wrapAdapt{
-        position: absolute;
-        top: -5px;
-        left: 40px;
-    }
-    .header_forSite_search{
-        width: 175px;
-    }
-
     .headerMob{
         display: flex;
-        justify-content: center;
-        align-items: center;
         position: fixed;
-        width: 50px;
+        bottom: 0px;
+        width: 100%;
         height: 50px;
-        background: #fc8507;
-        z-index: 100;
-        margin: 10px;
-        top:0;
-        left: 0;
-        overflow: visible;
+        z-index: 4;
+        background: #fff;
+        border-top: 1px solid grey;
+        border-bottom: 1px solid grey;
     }
-    .constraction1, .constraction2{
-        position: absolute;
-        width: 26px;
-        height: 26px;
-        border-radius: 50%;
-        border: 4px solid white;
+    .hederHub{
+        flex: 1;
+        color: dimgrey;
         transition: ease-in-out 0.3s;
-
+        cursor: pointer;
+        font-size: 12pt;
     }
-    .clickMenu{
-        position: absolute;
+    .hederHub a{color:dimgrey}
+    .hederHub:hover{
+        background: #cdcdcd;
+    }
+    .categorAdapt{
+        position: fixed;
+        width: 0%;
+        height: calc(100% - 52px);
+        top: 0;
+        right: 0;
+        background: #fff;
+        transition: ease-in-out 0.2s  0.2s;
+        cursor: auto;
+        visibility: hidden;
+        overflow: hidden;
+    }
+    .openClass{
+        width: 100%;
+        transition: ease-in-out 0.2s;
+        visibility: visible;
+    }
+    .rout{
         width: 100%;
         height: 100%;
-        opacity: 0;
-        z-index: 1;
-    }
-    .clickMenu:checked ~ .constraction1{
-        width: 26px;
-        height: 0px;
-        background: white;
-        border-radius: 0%;
-        transform: rotateZ(45deg);
-    }
-    .clickMenu:checked ~ .constraction2{
-        width: 26px;
-        height: 0px;
-        background: white;
-        border-radius: 0%;
-        transform: rotateZ(-45deg);
-    }
-    .menu{
-        position: absolute;
-        width: 50px;
-        height: 50px;
-        background: #fc8507;
-        top:0;
-        left: 0;
-        margin: 0;
+        flex-direction: column;
 
-        z-index: 0;
-        overflow: hidden;
-        box-shadow: 0px 0px 10px 8px rgba(34, 60, 80, 0.5);
-        transition: ease-in-out 0.3s;
     }
-    .clickMenu:checked + .menu{
-        z-index: 0;
-        width: 300px;
-        height: 350px;
-    }
-    .categ{
-        padding-top: 50px;
-        font-size: 16pt;
-    }
-    .categWrap{
-        height: 300px;
-        width: 100%;
-
-        overflow: auto;
-    }
-    .categPerson{
+        .thisCategor{
+            padding: 10px ;
+            border-bottom: 1px solid #cdcdcd;
+            font-size: 14pt;
+            color: black;
+        }
+        .thisCategor:hover{
+            background: #cdcdcd;
+        }
+    .search_wrap{
         padding: 20px;
+        border-bottom: 1px solid #cdcdcd;
+
     }
-    .categPerson span{
-        color: white;
-    }
-    .categPerson:hover{
-        background: #c3c3c3;
-    }
-    .categPersonCateg{
-        padding-left: 50px;
-    }
-    li{
-        list-style-type: disc;
+        .header_forSite_search{
+            width: calc(100% - 55px);
+            margin: 0;
+            padding: 0 35px 0 20px;
+        }
+        .search_ico{
+            top: 25px;
+            right: 25px;
+        }
+    .hederHub_ico{
+        width: 25px;
+        height: 25px;
     }
 }
 

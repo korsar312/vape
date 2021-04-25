@@ -1,5 +1,5 @@
 <template>
-    <div className="wrapper">
+    <div className="centerFull wrapper">
         <div className="back" v-on:click="show">
         </div>
 
@@ -17,7 +17,7 @@
                 </div>
                 <div>
                     <H2>Способ получения</H2>
-                    <div className="input inputChoice">
+                    <div className="input centerLight">
                         <button type="button" v-on:click="myChoice(true)" :class="[{ChoiceOn: choice},{contaiter:true},{Choice:true}]" className="contaiter Choice ChoiceOn">Доставка</button>
                         <button type="button" v-on:click="myChoice(false)" :class="[{ChoiceOn: !choice},{contaiter:true},{Choice:true}]" className="contaiter Choice">Самовывоз</button>
                     </div>
@@ -50,12 +50,12 @@
                     <textarea className="contaiter comment"></textarea>
                 </div>
                 <div className="sumbit">
-                    <button className="contaiter buttun" v-on:click="sendRequest()" type="button">Заказать!</button>
-                    <p> <b>*Оплата</b> производится только по факту получения товара, <b>наличным</b> или <b>безналичным</b> способом.</p>
+                    <button className="contaiter buttun" id="BigRedButton" v-on:click="sendRequest($event)" type="button">Заказать!</button>
+                    <H1 style="text-align: center; font-size: 15pt">ДАННЫЙ САЙТ НИЧЕГО НЕ ПРОДАЕТ, ТАК КАК БЫЛ СОЗДАН ДЛЯ ТЕСТОВ. </H1>
                 </div>
             </form>
 
-            <div className="HappyWrapper" v-if="choiceComplete">
+            <div className="centerFull HappyWrapper" v-if="choiceComplete">
                 <div className="weHappy">
                     Нам дорог ваш заказ!
                 </div>
@@ -88,6 +88,7 @@
                 choiceComplete: false,
                 numberOrder: '',
                 mobil: '',
+                loading: false,
             }
         },
         watch: {
@@ -114,7 +115,7 @@
             show(){
                 this.$store.commit('show');
             },
-            sendRequest(){
+            sendRequest(event){
                 if(this.$store.state.itemInBasket.length == 0){
                     alert('У вас пустая корзина')
                     return;
@@ -122,8 +123,11 @@
                 let valid = true
                 for(let i of document.body.querySelectorAll('.inputValueO')) {
                     if(i.value == ''){
-                        setTimeout((a,b)=>{b.placeholder = a},1000,i.placeholder,i)
-                        i.placeholder = 'Заполните это поле'
+                        if (i.placeholder == 'Заполните это поле'){valid = false}
+                        else{
+                            setTimeout((a,b)=>{b.placeholder = a},1000,i.placeholder,i)
+                            i.placeholder = 'Заполните это поле'
+                        }
 
                         valid = false
                     }
@@ -131,8 +135,11 @@
                 if(this.choice){
                     for(let i of document.body.querySelectorAll('.adresVal')){
                         if(i.value == ''){
-                            setTimeout((a,b)=>{b.placeholder = a},1000,i.placeholder,i)
-                            i.placeholder = 'Заполните это поле'
+                            if (i.placeholder == 'Заполните это поле'){valid = false}
+                            else{
+                                setTimeout((a,b)=>{b.placeholder = a},1000,i.placeholder,i)
+                                i.placeholder = 'Заполните это поле'
+                            }
 
                             valid = false
                         }
@@ -142,6 +149,14 @@
                 if(!valid){
                     return
                 }
+
+                if(this.loading){return}
+                this.loading = true
+
+                let curs = event.target.style.cursor
+                let back = event.target.style.background
+                event.target.style.cursor = 'wait';
+                event.target.style.background = 'rgb(204, 204, 204)'
 
                 let name = document.body.querySelector('.inputSelfName').value
                 let number = "%2b" + document.body.querySelector('.inputSelfNumber').value
@@ -170,11 +185,28 @@
                 message += `                                                                  Номер заказа: ${this.numberOrder}`
 
                 let tok = `1662190836:AAGFJexo_sQVuUDszhnFMuLhBRPVwT_xuJ4`
-                let url = `https://api.telegram.org/bot${tok}/sendMessage?chat_id=-421133281&text=`
+                let chatId = `-421133281`
+
+                let url = `https://api.telegram.org/bot${tok}/sendMessage?chat_id=${chatId}&text=`
                 let xhttp = new XMLHttpRequest()
                 xhttp.open('GET',url + message, true)
                 xhttp.send()
-                this.choiceComplete = true
+
+                let th = this
+                xhttp.onload = function() {
+                    if (xhttp.status != 200) {alert(`Ошибка ${xhttp.status}: ${xhttp.statusText}`)}
+                    else {
+                        th.choiceComplete = true
+                    }
+                };
+
+                xhttp.onerror = function() {
+                    alert("Запрос не удался");
+                    th.loading = false
+                    event.target.style.cursor = curs
+                    event.target.style.background = back
+                };
+
             },
         },
 
@@ -187,11 +219,7 @@
 
 <style scoped>
     .wrapper{
-        display: flex;
-        justify-content: center;
-        align-items: center;
         position: fixed;
-
         width: 100%;
         height: 100%;
         z-index: 101;
@@ -230,10 +258,6 @@
     }
     H1{
         font-size: 20pt;
-    }
-    .inputChoice{
-        display: flex;
-        justify-content: center
     }
     .Choice{
         height: 50px;
@@ -292,9 +316,6 @@
         font-size: 110%;
     }
     .HappyWrapper{
-        display: flex;
-        justify-content: center;
-        align-items: center;
         flex-direction: column;
         height: 100%;
     }
@@ -307,9 +328,10 @@
         .wrapper{
         }
         .window{
+            position: block;
             width: 100%;
             height: 100%;
-            margin: -20px 0 0 0;
+            margin: 0;
             border-radius: 0;
         }
         form{

@@ -2,7 +2,7 @@
     <div style="display: flex; justify-content: center">
 
 
-        <carousel :settings="settings" :breakpoints="breakpoints" style="width: 820px;">
+        <carousel :settings="settings" :breakpoints="breakpoints">
             <slide v-for="slide in renderItem" :key="slide">
 
                 <Item :render_Item="slide" />
@@ -32,14 +32,21 @@
         data(){
             return{
                 settings: {
+                    transition: 1000,
+                    wrapAround: true,
                     itemsToShow: 4,
                     snapAlign: 'left',
-                    transition: 1000,
                 },
                 breakpoints: {
-                    300:{
+                    0:{
+                        itemsToShow: 2,
+                    },
+                    350:{
+                        itemsToShow: 3,
+                    },
+                    470:{
                         itemsToShow: 4,
-                    }
+                    },
                 }
             }
         },
@@ -52,6 +59,9 @@
                 allItems.splice(12)
                 return allItems
             },
+        },
+        mounted() {
+            document.querySelector('.carousel')
         },
         methods:{
             mulberry32(a) {
@@ -70,9 +80,14 @@
     .product-wrap {
         min-height:210px;
     }
+    .carousel{
+        width: 820px;
+    }
 
-
-
-
-
+    @media all and (max-width: 820px) {
+        .carousel{
+            min-width: 100%;
+            width: 100%;
+        }
+    }
 </style>

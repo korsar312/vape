@@ -31,9 +31,12 @@ const store = createStore({
                 'type': 'Тип',
                 'discont': 'Скидка',
             },
+
+            heightBrouser: null,
             detailItem: {},
             showOrdering: false,
             showDetailItem: false,
+            showOld: true,
             item: {
                 liquid: {
                     name(){return 'Жидкость'},
@@ -681,6 +684,13 @@ const store = createStore({
         },
         setCookie(state){
             document.cookie = ("Basket=" + state.itemInBasket.map(i=>`${i.id}:${i.amount}`)) + 'endBasket; path=/; max-age=100000'
+        },
+        getOld(state){
+            let old = sessionStorage.getItem('old')
+            if (old == 'true'){state.showOld = false}
+        },
+        setOld(){
+            sessionStorage.setItem('old', 'true')
         },
         getCookie(state){
             let starsCookie = document.cookie.indexOf('Basket=') + 7

@@ -1,5 +1,5 @@
 <template>
-    <div className="wrapper">
+    <div className="centerFull wrapper">
         <div className="contaiter info">
             <H1>Информация по доставке</H1>
             <div>
@@ -21,15 +21,10 @@
 
 <style scoped>
     .wrapper{
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
         flex-direction: column;
     }
     .info{
         width: 1140px;
-
     }
     h1{
         font-size: 16pt;
@@ -50,7 +45,7 @@
         .wrapper{
             position: absolute;
             width: 100%;
-            height: 100%;
+            height: calc(100% - 70px);
             display: flex;
             justify-content: center;
             align-items: center;

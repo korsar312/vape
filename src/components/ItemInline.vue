@@ -23,7 +23,7 @@
 
             </div>
         </div>
-        <div  v-on:click="addToBasket()" className="buy">
+        <div  v-on:click="addToBasket()" className="centerFull buy">
             <div className="constractionA">
                 <div className="constraction constraction1">
 
@@ -72,7 +72,6 @@
     .wrap{
         background: #fc8507;
         border-right: 1px solid #eaeaea;
-        height: 70px;
         flex: 1;
         display: flex;
         transition: ease-in-out 0.6s;
@@ -103,9 +102,6 @@
         background: #fc8507;
         transition: ease-in-out 0.3s;
         padding: 0px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
         position: relative;
         cursor: pointer;
     }

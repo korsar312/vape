@@ -1,7 +1,7 @@
 <template>
     <div className="contaiter main">
         <div className="wrap">
-            <div style="display: flex; align-items: center">
+            <div class="centerFull adapt">
                 <img className="contaiter img" :src="require(`./img_item${render_Item.img}`)"/>
             </div>
             <div className="all">
@@ -77,6 +77,7 @@
 <style scoped>
     .main{
         display: flex;
+        min-height: 70px;
     }
     .wrap{
         background: #fc8507;
@@ -186,4 +187,9 @@
             background: white;
             border-radius: 10px;
         }
+    @media all and (max-width: 345px) {
+        .adapt{
+            display: none;
+        }
+    }
 </style>

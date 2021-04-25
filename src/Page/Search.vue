@@ -1,20 +1,22 @@
 <template>
-    <div class="wrapper">
+    <div class="centerLight">
         <div>
 
-            <div class="adapt contaiter">
-               <p>Результаты поиска</p>
+            <div class="adapt centerFull contaiter">
+               <span>Результаты поиска</span>
             </div>
-            <div class="contaiter search_wrapper">
-
-                <div v-if="itemInSearch.length == 0" style="display: flex; justify-content: center; align-items: center;">
-                    <H1>Поиск не дал результатов</H1>
+            <div class="contaiter">
+                <div class="centerLight search_wrapper">
+                    <div v-if="itemInSearch.length == 0" style="display: flex; justify-content: center; align-items: center;">
+                        <H1>Поиск не дал результатов</H1>
+                    </div>
+                    <Item v-for="item in itemInSearch"
+                          :key="item"
+                          :render_Item="item"
+                    />
                 </div>
-                <Item v-for="item in itemInSearch"
-                      :key="item"
-                      :render_Item="item"
-                />
             </div>
+
 
         </div>
     </div>
@@ -85,15 +87,10 @@
 
 <style scoped>
     .search_wrapper{
-        display: flex;
         flex-wrap: wrap;
-        justify-content: center;
         width: 1140px;
         min-height: 50px;
-    }
-    .wrapper{
-        display: flex;
-        justify-content: center;
+        overflow: auto;
     }
     H1{
         font-size: 16pt;
@@ -109,11 +106,10 @@
     @media all and (max-width: 820px) {
         .search_wrapper{
             width: calc(100vw - 25px);
+            max-height: calc((var(--vh, 1vh) * 100) - 135px);
         }
         .adapt{
             display: flex;
-            justify-content: center;
-            align-items: center;
             height: 50px;
             font-size: 17pt
         }

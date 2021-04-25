@@ -1,23 +1,30 @@
 <template>
     <div class="product-wrap contaiter">
-        <div class="product-item">
+        <div v-show = "GetOutListener" >
 
-            <img :src="require(`./img_item${render_Item.img}`)"/>
+            <div class="product-item">
+                <img :src="require(`./img_item${render_Item.img}`)"/>
 
-            <div class="product-buttons">
-                <div v-on:click="addToBasket()" type="button" class="button">В корзину</div>
+                <div class="product-buttons">
+                    <div v-on:click="addToBasket()" type="button" class="button">В корзину</div>
+                </div>
             </div>
-        </div>
-        <div class="product-title">
-            <a v-on:click="showDetailItem()">{{render_Item.name}}</a>
-            <span v-if="!Object.prototype.hasOwnProperty.call(render_Item, 'discont')" class="product-price">₽ {{render_Item.price}}</span>
-            <div v-if="Object.prototype.hasOwnProperty.call(render_Item, 'discont')" class="product-price">
-                <div class="product-price1"> <strike>₽ {{render_Item.price}}</strike> </div>
-                <div class="product-price2">-{{render_Item.discont}}</div>
-                <div class="product-price3">₽ {{render_Item.price - (Math.round(render_Item.price / 100 * parseInt(render_Item.discont)))}}</div>
+            <div class="product-title">
+                <a v-on:click="showDetailItem()">{{render_Item.name}}</a>
+                <span v-if="!Object.prototype.hasOwnProperty.call(render_Item, 'discont')" class="product-price">₽ {{render_Item.price}}</span>
+                <div v-if="Object.prototype.hasOwnProperty.call(render_Item, 'discont')" class="product-price">
+                    <div class="product-price1"> <strike>₽ {{render_Item.price}}</strike> </div>
+                    <div class="product-price2">-{{render_Item.discont}}</div>
+                    <div class="product-price3">₽ {{render_Item.price - (Math.round(render_Item.price / 100 * parseInt(render_Item.discont)))}}</div>
+                </div>
             </div>
+
         </div>
+
+
     </div>
+
+
 </template>
 
 
@@ -27,6 +34,7 @@
         name: "Item",
         data(){
             return{
+                GetOutListener: false
             }
         },
         props:{
@@ -37,7 +45,30 @@
                 }
             },
         },
+        computed:{
+
+        },
+        mounted() {
+            this.ListenerHeightEl()
+        },
         methods:{
+            ListenerHeightEl(){
+                this.thisHeight = Math.round(this.$el.getBoundingClientRect().top)
+                if(this.$store.state.heightBrouser > this.thisHeight){
+                    this.GetOutListener = true
+                    clearInterval(check)
+                }
+
+                let check = setInterval((th = this)=>{
+                    th.thisHeight = Math.round(th.$el.getBoundingClientRect().top)
+                    if(th.$store.state.heightBrouser > th.thisHeight){
+                        th.GetOutListener = true
+                        clearInterval(check)
+                    }
+                }, 200)
+            },
+
+
             addToBasket(){
                 this.$store.dispatch('addBasket', this.render_Item);
             },
@@ -54,6 +85,8 @@
 
 
 <style scoped>
+
+
     .product-wrap {
         width: 180px;
         height: 190px;
@@ -97,6 +130,7 @@
         transform: translate(-50%, -50%) scale(0);
         transition: .3s ease-in-out;
         cursor: pointer;
+        user-select: none;
     }
     .button:before {
         content: "\f07a";
@@ -159,7 +193,9 @@
         flex: 0.5;
     }
     @media all and (max-width: 820px) {
-
-        
+        .product-wrap{
+            transform: scale(0.7);
+            margin: -25px -20px;
+        }
     }
 </style>

@@ -1,18 +1,20 @@
 <template>
-    <div className="basket_wrapper">
+    <div className="centerLight basket_wrapper">
         <div>
             <div className="buttonWrapper">
-                <ButtonOrder/>
+                <ButtonOrder v-show="$store.state.itemInBasket.reduce((s, c) => s += (c.price * c.amount), 0) != 0"/>
             </div>
 
             <div className="contaiter adapt" style="margin-bottom: 10px">
                 <div className="basket">
-                    <div style="display: flex; justify-content: center; align-items: center; height: 45px"> <span style="font-size: 17pt">Корзина</span> </div>
+                    <div class="centerFull adapty">
+                        <span style="font-size: 17pt">Корзина</span>
+                    </div>
                 </div>
             </div>
             <div className="contaiter" style="margin-bottom: 100px">
-                <div className="basket">
-                    <div v-if="items.length==0" style="display: flex; justify-content: center; align-items: center; height: 45px"> <span style="font-size: 14pt">В корзине ничего нет :(</span> </div>
+                <div className="basket basket_wrap">
+                    <div v-if="items.length==0" class="centerFull" style="height: 45px"> <span style="font-size: 14pt">В корзине ничего нет :(</span> </div>
                     <ItemInBasket v-for="item in items" :key="item" :render_Item="item"/>
                 </div>
             </div>
@@ -50,10 +52,6 @@
     .adapt{
         display: none;
     }
-    .basket_wrapper{
-        display: flex;
-        justify-content: center;
-    }
     .basket{
         width:1140px;
         min-height: 50px;
@@ -71,23 +69,27 @@
             display: block;
         }
         .basket{
-            width: calc(100vw - 20px);
-
+            width: calc(100vw - 25px);
             overflow: auto;
         }
-        .basket_wrapper{
-            display: block;
+        .basket_wrap{
+            max-height: calc((var(--vh, 1vh) * 100) - 220px);
         }
         .wrapper{
             position: fixed;
-            bottom: 0;
+            bottom: 52px;
             left: 0;
             width: 100%;
-            height: 95px;
+            height: 85px;
             margin: 0;
             border-radius: 0;
             font-size: 6vw;
-            z-index: 11;
+            z-index: 3;
+        }
+        .adapty{
+            display: flex;
+            height: 50px;
+            font-size: 17pt
         }
     }
 </style>
