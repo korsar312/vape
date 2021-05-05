@@ -59,7 +59,7 @@
                                         </g>
                                     </svg>
 
-                                    <div className='header_forSite_basket_img3'>
+                                    <div className='centerFull header_forSite_basket_img3'>
                                         <p>{{lengthBasket}}</p>
                                     </div>
                                 </div>
@@ -93,7 +93,7 @@
         </div>
     </header>
 
-    <nav className="headerMob" v-show="!($store.state.showOrdering || $store.state.showDetailItem)">
+    <nav className="headerMob" v-show="!($store.state.showAny.showOrdering || $store.state.showAny.showDetailItem)">
         <div class="hederHub" v-on:click="showFunc()">
             <router-link class="centerFull rout" :to="{name: 'main'}">
                 <div class="centerFull hederHub_ico">
@@ -193,7 +193,11 @@
         name: "Header",
         computed:{
             lengthBasket(){
-                return this.$store.state.itemInBasket.length
+                let sum = 0
+                for(let i of this.$store.state.itemInBasket){
+                    sum += +i.amount
+                }
+                return sum
             },
         },
         data() {
@@ -259,102 +263,100 @@
 
 
 <style scoped>
-header{
-    box-shadow: 0px 5px 15px 5px rgba(34, 60, 80, 0.1);
-    margin: 0  0 20px 0;
-    color: white;
-}
-        .headerWrapper{
-            display: flex;
-            justify-content: center;
-        }
+    header{
+        box-shadow: 0px 5px 15px 5px rgba(34, 60, 80, 0.1);
+        margin: 0  0 20px 0;
+        color: white;
+    }
+    .headerWrapper{
+        display: flex;
+        justify-content: center;
+    }
 
-        .headerTop{
-            background: #fc8507;
-            height: 40px;
-        }
-                .header_forShop{
-                    display: flex;
-                    Justify-content: center;
-                }
-                    .header_forShop_{
-                    min-width: 280px;
-                    text-align: center;
-                    padding-top: 10px;
-                    }
-                    .header_forShop_loc{
-                    text-align: left;
-                    }
-                    .header_forShop_num{
-                    text-align: right;
-                    }
+    .headerTop{
+        background: #fc8507;
+        height: 40px;
+    }
+    .header_forShop{
+        display: flex;
+        Justify-content: center;
+    }
+    .header_forShop_{
+        min-width: 280px;
+        text-align: center;
+        padding-top: 10px;
+    }
+    .header_forShop_loc{
+        text-align: left;
+    }
+    .header_forShop_num{
+        text-align: right;
+    }
 
-        .headerBot{
-            background: #fff;
-            height: 60px;
-        }
+    .headerBot{
+        background: #fff;
+        height: 60px;
+    }
 
-                .header_forSite{
-                display: flex;
-                Justify-content: center;
-                }
-                .header_forSite_name{
+    .header_forSite{
+        display: flex;
+        Justify-content: center;
+    }
+    .header_forSite_name{
 
-                }
+    }
 
-                        .search_wrap{
-                        position:relative;
-                        }
-                        .search_ico{
-                        position: absolute;
-                        top: 13px;
-                        right: 5px;
-                        cursor: pointer;
-                        transition: ease-in-out 0.3s;
-                        }
-                        .search_ico:hover{
-                        transform: scale(1.2);
-                        }
-                        .header_forSite_search{
-                        background: #eaeaea;
-                        width: 230px;
-                        height: 40px;
-                        margin: 10px 0 0 20px;
-                        border-radius: 10px;
-                        border: none;
-                        padding: 0 40px 0 20px;
-                        }
-                        .header_forSite_basket{
-                        width: 50px;
-                        margin: 8px 10px 8px 372px;
-                        }
-                        .header_forSite_basket_img{
-                        width: 41px;
-                        height: 40px;
-                        border: 2px solid #fc8507;
-                        border-radius: 10px;
-                        position: relative;
-                        }
-                        .header_forSite_basket_img2{
-                        margin: 3px 5px;
-                        }
-                        .header_forSite_basket_img3{
-                        background: white;
-                        position: absolute;
-                        bottom: -2px;
-                        right: -2px;
-                        width: 15px;
-                        height: 15px;
-                        border: 2px solid #fc8507;
-                        border-radius: 10px;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        }
-                        .header_forSite_basket_img3 p{
-                        color: black;
-                        font-size: 9pt;
-                        }
+    .search_wrap{
+        position:relative;
+    }
+    .search_ico{
+        position: absolute;
+        top: 13px;
+        right: 5px;
+        cursor: pointer;
+        transition: ease-in-out 0.3s;
+    }
+    .search_ico:hover{
+        transform: scale(1.2);
+    }
+    .header_forSite_search{
+        background: #eaeaea;
+        width: 230px;
+        height: 40px;
+        margin: 10px 0 0 20px;
+        border-radius: 10px;
+        border: none;
+        padding: 0 40px 0 20px;
+    }
+    .header_forSite_basket{
+        width: 50px;
+        margin: 8px 10px 8px 372px;
+    }
+    .header_forSite_basket_img{
+        width: 41px;
+        height: 40px;
+        border: 2px solid #fc8507;
+        border-radius: 10px;
+        position: relative;
+    }
+    .header_forSite_basket_img2{
+        margin: 3px 5px;
+    }
+    .header_forSite_basket_img3{
+        background: white;
+        position: absolute;
+        bottom: -2px;
+        right: -2px;
+        width: 15px;
+        height: 15px;
+        border: 2px solid #fc8507;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    .header_forSite_basket_img3 p{
+        color: black;
+        font-size: 8pt;
+    }
 
 
     a{
@@ -365,66 +367,66 @@ header{
     }
 
 
-@media all and (max-width: 1140px) {
-    .header_forShop_{
-        min-width: 200px;
-    }
-    .header_forSite_basket{
-        margin: 8px 10px 8px 50px;
+    @media all and (max-width: 1140px) {
+        .header_forShop_{
+            min-width: 200px;
+        }
+        .header_forSite_basket{
+            margin: 8px 10px 8px 50px;
 
+        }
     }
-}
 
-@media all and (max-width: 820px) {
+    @media all and (max-width: 820px) {
+        .header{
+            display: none;
+        }
+        .headerMob{
+            display: flex;
+            position: fixed;
+            bottom: 0px;
+            width: 100%;
+            height: 50px;
+            z-index: 4;
+            background: #fff;
+            border-top: 1px solid grey;
+            border-bottom: 1px solid grey;
+        }
+        .hederHub{
+            flex: 1;
+            color: dimgrey;
+            transition: ease-in-out 0.3s;
+            cursor: pointer;
+            font-size: 12pt;
+            position: relative;
+        }
+        .hederHub a{color:dimgrey}
+        .hederHub:hover{
+            background: #cdcdcd;
+        }
+        .categorAdapt{
+            position: fixed;
+            width: 0%;
+            height: calc(100% - 52px);
+            top: 0;
+            right: 0;
+            background: #fff;
+            transition: ease-in-out 0.2s  0.2s;
+            cursor: auto;
+            visibility: hidden;
+            overflow: hidden;
+        }
+        .openClass{
+            width: 100%;
+            transition: ease-in-out 0.2s;
+            visibility: visible;
+        }
+        .rout{
+            width: 100%;
+            height: 100%;
+            flex-direction: column;
 
-    .header{
-        display: none;
-    }
-    .headerMob{
-        display: flex;
-        position: fixed;
-        bottom: 0px;
-        width: 100%;
-        height: 50px;
-        z-index: 4;
-        background: #fff;
-        border-top: 1px solid grey;
-        border-bottom: 1px solid grey;
-    }
-    .hederHub{
-        flex: 1;
-        color: dimgrey;
-        transition: ease-in-out 0.3s;
-        cursor: pointer;
-        font-size: 12pt;
-    }
-    .hederHub a{color:dimgrey}
-    .hederHub:hover{
-        background: #cdcdcd;
-    }
-    .categorAdapt{
-        position: fixed;
-        width: 0%;
-        height: calc(100% - 52px);
-        top: 0;
-        right: 0;
-        background: #fff;
-        transition: ease-in-out 0.2s  0.2s;
-        cursor: auto;
-        visibility: hidden;
-        overflow: hidden;
-    }
-    .openClass{
-        width: 100%;
-        transition: ease-in-out 0.2s;
-        visibility: visible;
-    }
-    .rout{
-        width: 100%;
-        height: 100%;
-        flex-direction: column;
-
-    }
+        }
         .thisCategor{
             padding: 10px ;
             border-bottom: 1px solid #cdcdcd;
@@ -434,11 +436,11 @@ header{
         .thisCategor:hover{
             background: #cdcdcd;
         }
-    .search_wrap{
-        padding: 20px;
-        border-bottom: 1px solid #cdcdcd;
+        .search_wrap{
+            padding: 20px;
+            border-bottom: 1px solid #cdcdcd;
 
-    }
+        }
         .header_forSite_search{
             width: calc(100% - 55px);
             margin: 0;
@@ -448,11 +450,11 @@ header{
             top: 25px;
             right: 25px;
         }
-    .hederHub_ico{
-        width: 25px;
-        height: 25px;
+        .hederHub_ico{
+            width: 25px;
+            height: 25px;
+        }
     }
-}
 
 
 </style>

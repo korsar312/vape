@@ -87,6 +87,8 @@
             z-index: 3;
         }
         .adapty{
+            display: -webkit-box;
+            display: -ms-flexbox;
             display: flex;
             height: 50px;
             font-size: 17pt

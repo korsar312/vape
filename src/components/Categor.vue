@@ -67,10 +67,14 @@
         border-bottom: 1px solid #222222;
         left: 34px;
         top: 17px;
+        -webkit-transform: rotateZ(45deg);
+        -ms-transform: rotate(45deg);
         transform: rotateZ(45deg);
     }
     .shop_shop_filt_category_arrow{
         top: 22px;
+        -webkit-transform: rotateZ(225deg);
+        -ms-transform: rotate(225deg);
         transform: rotateZ(225deg);
     }
     .shop_shop_filt_category_inner{
@@ -79,12 +83,16 @@
     .inner{
         height: 15px;
         opacity: 1;
+        -webkit-transition: height ease-in-out 0.3s, opacity ease-in-out 0.3s 0.3s, margin ease-in-out 0.3s;
+        -o-transition: height ease-in-out 0.3s, opacity ease-in-out 0.3s 0.3s, margin ease-in-out 0.3s;
         transition: height ease-in-out 0.3s, opacity ease-in-out 0.3s 0.3s, margin ease-in-out 0.3s;
         margin: 10px 20px;
     }
     .innerON{
         height: 0px;
         opacity: 0;
+        -webkit-transition: height ease-in-out 0.3s 0.3s, opacity ease-in-out 0.3s, margin ease-in-out 0.3s 0.3s;
+        -o-transition: height ease-in-out 0.3s 0.3s, opacity ease-in-out 0.3s, margin ease-in-out 0.3s 0.3s;
         transition: height ease-in-out 0.3s 0.3s, opacity ease-in-out 0.3s, margin ease-in-out 0.3s 0.3s;
         margin: 0px;
     }

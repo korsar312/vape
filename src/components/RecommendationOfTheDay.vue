@@ -34,18 +34,23 @@
                 settings: {
                     transition: 1000,
                     wrapAround: true,
-                    itemsToShow: 4,
                     snapAlign: 'left',
                 },
                 breakpoints: {
                     0:{
                         itemsToShow: 2,
                     },
-                    350:{
+                    321:{
                         itemsToShow: 3,
                     },
-                    470:{
+                    425:{
+                        itemsToShow: 3,
+                    },
+                    570:{
                         itemsToShow: 4,
+                    },
+                    730:{
+                        itemsToShow: 5,
                     },
                 }
             }

@@ -76,13 +76,21 @@
 
 <style scoped>
     .main{
+        display: -webkit-box;
+        display: -ms-flexbox;
         display: flex;
         min-height: 70px;
     }
     .wrap{
         background: #fc8507;
+        -webkit-box-flex: 1;
+        -ms-flex: 1;
         flex: 1;
+        display: -webkit-box;
+        display: -ms-flexbox;
         display: flex;
+        -webkit-transition: ease-in-out 0.6s;
+        -o-transition: ease-in-out 0.6s;
         transition: ease-in-out 0.6s;
     }
     .img{
@@ -95,10 +103,16 @@
         cursor: pointer;
     }
     .all{
+        -webkit-box-flex: 1;
+        -ms-flex: 1;
         flex: 1;
     }
     .price{
+        display: -webkit-box;
+        display: -ms-flexbox;
         display: flex;
+        -webkit-box-pack: left;
+        -ms-flex-pack: left;
         justify-content: left;
     }
     .detail{
@@ -110,9 +124,17 @@
     .buy{
         border-left: 1px solid #eaeaea;
         background: #fc8507;
+        -webkit-transition: ease-in-out 0.3s;
+        -o-transition: ease-in-out 0.3s;
         transition: ease-in-out 0.3s;
+        display: -webkit-box;
+        display: -ms-flexbox;
         display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
         justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
         align-items: center;
         position: relative;
         cursor: pointer;
@@ -134,59 +156,61 @@
     .buyR:hover{
         background: red;
     }
-        .remove{
-            width: 16px;
-            height: 4px;
-            background: white;
-            position: relative;
-            transform: rotateZ(45deg);
-            border-radius: 10px;
+    .remove{
+        width: 16px;
+        height: 4px;
+        background: white;
+        position: relative;
+        -webkit-transform: rotateZ(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotateZ(45deg);
+        border-radius: 10px;
 
-        }
-        .remove:after{
-            position: absolute;
-            left: 6px;
-            top: -6px;
-            content: "";
-            width: 4px;
-            height: 16px;
-            background: white;
-            border-radius: 10px;
-            border-radius: 10px;
+    }
+    .remove:after{
+        position: absolute;
+        left: 6px;
+        top: -6px;
+        content: "";
+        width: 4px;
+        height: 16px;
+        background: white;
+        border-radius: 10px;
+        border-radius: 10px;
 
-        }
-        .min{
-            width: 16px;
-            height: 4px;
-            background: white;
-            border-radius: 10px;
+    }
+    .min{
+        width: 16px;
+        height: 4px;
+        background: white;
+        border-radius: 10px;
 
-        }
-        .current{
-            text-align: center;
-            width: 20px;
-            border-radius: 5px;
-            border: none;
-            padding: 5px;
-        }
-        .max{
-            width: 16px;
-            height: 4px;
-            background: white;
-            position: relative;
-            border-radius: 10px;
+    }
+    .current{
+        text-align: center;
+        width: 20px;
+        border-radius: 5px;
+        border: none;
+        padding: 5px;
+    }
+    .max{
+        width: 16px;
+        height: 4px;
+        background: white;
+        position: relative;
+        border-radius: 10px;
 
-        }
-        .max:after{
-            position: absolute;
-            left: 6px;
-            top: -6px;
-            content: "";
-            width: 4px;
-            height: 16px;
-            background: white;
-            border-radius: 10px;
-        }
+    }
+    .max:after{
+        position: absolute;
+        left: 6px;
+        top: -6px;
+        content: "";
+        width: 4px;
+        height: 16px;
+        background: white;
+        border-radius: 10px;
+    }
     @media all and (max-width: 345px) {
         .adapt{
             display: none;

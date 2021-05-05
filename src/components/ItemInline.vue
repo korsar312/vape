@@ -66,14 +66,22 @@
 
 <style scoped>
     .main{
+        display: -webkit-box;
+        display: -ms-flexbox;
         display: flex;
 
     }
     .wrap{
         background: #fc8507;
         border-right: 1px solid #eaeaea;
+        -webkit-box-flex: 1;
+        -ms-flex: 1;
         flex: 1;
+        display: -webkit-box;
+        display: -ms-flexbox;
         display: flex;
+        -webkit-transition: ease-in-out 0.6s;
+        -o-transition: ease-in-out 0.6s;
         transition: ease-in-out 0.6s;
     }
     .img{
@@ -86,12 +94,18 @@
         cursor: pointer;
     }
     .all{
+        -webkit-box-flex: 1;
+        -ms-flex: 1;
         flex: 1;
     }
     .price{
+        display: -webkit-box;
+        display: -ms-flexbox;
         display: flex;
     }
     .priceNow, .priceOld, .priceArrow{
+        -webkit-box-flex: 1;
+        -ms-flex: 1;
         flex: 1;
         text-align: center;
         font-size: 14pt;
@@ -100,6 +114,8 @@
     .buy{
         width: 50px;
         background: #fc8507;
+        -webkit-transition: ease-in-out 0.3s;
+        -o-transition: ease-in-out 0.3s;
         transition: ease-in-out 0.3s;
         padding: 0px;
         position: relative;

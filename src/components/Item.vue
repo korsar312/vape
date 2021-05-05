@@ -1,30 +1,32 @@
 <template>
-    <div class="product-wrap contaiter">
+    <div class="contaiter card">
         <div v-show = "GetOutListener" >
-
-            <div class="product-item">
+            <div class="centerLight img">
                 <img :src="require(`./img_item${render_Item.img}`)"/>
+                <div v-on:click="showDetailItem()" class="centerFull name">
+                    <div  class="centerFull">{{render_Item.name}}</div>
+                </div>
+            </div>
+            <div class="buyOption">
+                <div class="buy">
+                    <div v-on:click="del()" class="B A"><div class="min"></div></div>
+                    <div class="C"></div>
+                    <div class="B">{{amount}}</div>
+                    <div class="C"></div>
+                    <div v-on:click="add()" class="B A"><div class="max"></div></div>
+                </div>
+                <div class="buy" :class="{ out: buyCheck }">
+                    <div v-on:click="addToBasket()" id="buy" class="B A">
+                        <p>Купить</p>
+                        <p v-if="!render_Item.discont" class="price">{{render_Item.price}}р</p>
+                        <p v-if="render_Item.discont" class="price"><strike>{{render_Item.price}}р</strike> &#10146; {{render_Item.price - (Math.round(render_Item.price / 100 * parseInt(render_Item.discont)))}}р</p>
+                    </div>
+                </div>
+            </div>
 
-                <div class="product-buttons">
-                    <div v-on:click="addToBasket()" type="button" class="button">В корзину</div>
-                </div>
-            </div>
-            <div class="product-title">
-                <a v-on:click="showDetailItem()">{{render_Item.name}}</a>
-                <span v-if="!Object.prototype.hasOwnProperty.call(render_Item, 'discont')" class="product-price">₽ {{render_Item.price}}</span>
-                <div v-if="Object.prototype.hasOwnProperty.call(render_Item, 'discont')" class="product-price">
-                    <div class="product-price1"> <strike>₽ {{render_Item.price}}</strike> </div>
-                    <div class="product-price2">-{{render_Item.discont}}</div>
-                    <div class="product-price3">₽ {{render_Item.price - (Math.round(render_Item.price / 100 * parseInt(render_Item.discont)))}}</div>
-                </div>
-            </div>
 
         </div>
-
-
     </div>
-
-
 </template>
 
 
@@ -34,7 +36,8 @@
         name: "Item",
         data(){
             return{
-                GetOutListener: false
+                GetOutListener: false,
+                obj: this.render_Item,
             }
         },
         props:{
@@ -46,34 +49,64 @@
             },
         },
         computed:{
-
+            amount(){
+                return this.render_Item.amount
+            },
+            buyCheck(){
+                if(this.$store.state.itemInBasket.includes(this.render_Item)){
+                    return true
+                }
+                return false
+            }
         },
         mounted() {
             this.ListenerHeightEl()
         },
+        watch: {
+            amount: function(){
+                let word = String(this.amount).split('').map(i=>{
+                    if(i>=0 && i<=9){return i}
+                }).join('')
+                word == 0 ? word = 1 : ''
+                this.amount = Number(word)
+                this.obj.amount = Number(word)
+                this.$store.commit('setCookie');
+            }
+        },
         methods:{
             ListenerHeightEl(){
                 this.thisHeight = Math.round(this.$el.getBoundingClientRect().top)
-                if(this.$store.state.heightBrouser > this.thisHeight){
+                if(this.$store.state.heightBrouser + 400 > this.thisHeight){
                     this.GetOutListener = true
                     clearInterval(check)
                 }
-
                 let check = setInterval((th = this)=>{
                     th.thisHeight = Math.round(th.$el.getBoundingClientRect().top)
-                    if(th.$store.state.heightBrouser > th.thisHeight){
+                    if(th.$store.state.heightBrouser + 400 > th.thisHeight){
                         th.GetOutListener = true
                         clearInterval(check)
                     }
-                }, 200)
+                }, 100)
             },
-
 
             addToBasket(){
                 this.$store.dispatch('addBasket', this.render_Item);
             },
+
             showDetailItem(){
                 this.$store.commit('showDetailItem', this.render_Item);
+            },
+
+            add(){
+                this.obj.amount++
+            },
+
+            del(){
+                if(this.obj.amount<=1){this.removeInBasket()}
+                this.obj.amount--
+            },
+            removeInBasket(){
+                this.$store.dispatch('removeBasket', this.render_Item);
             },
         },
     }
@@ -86,116 +119,151 @@
 
 <style scoped>
 
-
-    .product-wrap {
-        width: 180px;
-        height: 190px;
-        margin: 10px;
-        background: white;
-        padding: 0 0 20px;
-        text-align: center;
-        font-size: 14px;
-        font-family: Lora;
-        text-transform: uppercase;
-    }
-    .product-item {
+    .card{
+        min-width: 130px;
+        width: 130px;
+        min-height: 150px;
+        height: 150px;
+        border-radius: 15px;
         position: relative;
+    }
+
+    .img{
+        height: 115px;
+    }
+        .img img{
+            height: 100%;
+        }
+        .name{
+            background: white;
+            position: absolute;
+            top: calc(0px);
+            color: black;
+            width: calc(100%);
+            padding: 2px 5px;
+            opacity: 0.6;
+            transition: ease-in-out 0.3s;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 900;
+        }
+
+        .img:hover > .name{
+            opacity: 1;
+        }
+    .buyOption{
+        height: 40px;
+        font-size: 13pt;
+        position: absolute;
+        bottom: 0px;
+        width: 100%;
         overflow: hidden;
     }
-    .product-wrap img {
-        display: block;
-        width: 100%;
-    }
-    .product-buttons {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, .8);
-        opacity: 0;
-        transition: .3s ease-in-out;
-    }
-    .button {
-        text-decoration: none;
-        color: #c0a97a;
-        font-size: 12px;
-        width: 140px;
-        height: 40px;
-        line-height: 40px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        border: 2px solid #c0a97a;
-        transform: translate(-50%, -50%) scale(0);
-        transition: .3s ease-in-out;
-        cursor: pointer;
-        user-select: none;
-    }
-    .button:before {
-        content: "\f07a";
-        font-family: FontAwesome;
-        margin-right: 10px;
-    }
-    .product-item:hover .product-buttons {
-        opacity: 1;
-    }
-    .product-item:hover .button {
-        transform: translate(-50%, -50%) scale(1);
-    }
-    .button:hover {
-        background: black;
-    }
-    .product-title {
-        color: #5e5e5e;
-    }
-    .product-title a {
-        text-decoration: none;
-        color: #2e2e2e;
-        font-weight: 600;
-        margin: 15px 0 5px;
-        padding-bottom: 7px;
-        display: block;
+        .buy{
+            bottom: 0px;
+            position: absolute;
+
+            width: 100%;
+            height: 35px;
+            -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+            display:-webkit-box;
+            display:-ms-flexbox;
+            display:flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            border-radius: 0 0 15px 15px;
+            -webkit-transition: ease-in-out 0.2s;
+            -o-transition: ease-in-out 0.2s;
+            transition: ease-in-out 0.2s;
+
+        }
+        .price{
+            font-size: 12pt;
+            padding: 0px 0px 2px 0px;
+        }
+        .out{
+            bottom: -35px;
+        }
+            .B{
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                flex-direction: column;
+                -webkit-box-orient: vertical;
+                -webkit-box-direction: normal;
+                -ms-flex-direction: colum;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+                -webkit-box-pack:center;
+                -ms-flex-pack:center;
+                justify-content:center;
+
+                background: rgb(252,133,7);
+                height: 100%;
+                color: #fff;
+                -webkit-box-flex: 1;
+                -ms-flex: 1;
+                flex: 1;
+                text-align: center;
+                -webkit-transition: ease-in-out 0.2s;
+                -o-transition: ease-in-out 0.2s;
+                transition: ease-in-out 0.2s;
+            }
+            .C{
+                width: 1px;
+                height: 100%;
+                background: #cdcdcd
+            }
+            .A{
+                cursor: pointer;
+            }
+            .A:hover{
+                background: lightskyblue;
+            }
+            .A:active{
+                background: lightcoral;
+            }
+    .max{
+        width: 16px;
+        height: 4px;
+        background: white;
         position: relative;
-        transition: .3s ease-in-out;
-        cursor: pointer;
+        border-radius: 10px;
+
     }
-    .product-title a:after {
-        content: "";
+    .max:after{
         position: absolute;
-        width: 40px;
-        height: 2px;
-        background: #2e2e2e;
-        left: 50%;
-        margin-left: -20px;
-        bottom: 0;
-        transition: .3s ease-in-out;
+        left: 6px;
+        top: -6px;
+        content: "";
+        width: 4px;
+        height: 16px;
+        background: white;
+        border-radius: 10px;
     }
-    .product-title a:hover {
-        color: #c0a97a;
+    .min{
+        width: 16px;
+        height: 4px;
+        background: white;
+        border-radius: 10px;
+
     }
-    .product-title:hover a:after {
-        background: #c0a97a;
-    }
-    .product-price {
-        font-size: 20px;
-        color: #c0a97a;
-        font-weight: 700;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .product-price1, .product-price3 {
-        flex: 1;
-    }
-    .product-price2{
-        font-size: 12pt;
-        flex: 0.5;
-    }
+
     @media all and (max-width: 820px) {
-        .product-wrap{
-            transform: scale(0.7);
-            margin: -25px -20px;
+        .name{
+            opacity: 0.8;
+        }
+    }
+    @media all and (max-width: 420px) {
+        .card{
+            transform: scale(0.8);
+            margin: -10px -10px;
         }
     }
 </style>

@@ -87,6 +87,7 @@
 
 <style scoped>
     .search_wrapper{
+        -ms-flex-wrap: wrap;
         flex-wrap: wrap;
         width: 1140px;
         min-height: 50px;
@@ -109,6 +110,8 @@
             max-height: calc((var(--vh, 1vh) * 100) - 135px);
         }
         .adapt{
+            display: -webkit-box;
+            display: -ms-flexbox;
             display: flex;
             height: 50px;
             font-size: 17pt

@@ -115,7 +115,7 @@
             show(){
                 this.$store.commit('show');
             },
-            sendRequest(event){
+            valid(event){
                 if(this.$store.state.itemInBasket.length == 0){
                     alert('У вас пустая корзина')
                     return;
@@ -146,12 +146,22 @@
                     }
                 }
 
-                if(!valid){
+                if(!valid && event.target.firstChild.textContent != 'Заполните все поля'){
+                    setTimeout((a)=>{a.textContent = 'Заказать!'},1000, event.target.firstChild)
+                    event.target.firstChild.textContent = 'Заполните все поля'
+                }
+
+                return valid;
+            },
+            sendRequest(event){
+                if(!this.valid(event)){
                     return
                 }
 
                 if(this.loading){return}
                 this.loading = true
+
+                event.target.firstChild.textContent = 'Обработка...'
 
                 let curs = event.target.style.cursor
                 let back = event.target.style.background
@@ -205,6 +215,7 @@
                     th.loading = false
                     event.target.style.cursor = curs
                     event.target.style.background = back
+                    event.target.firstChild.textContent = 'Попробовать ещё раз'
                 };
 
             },
@@ -243,6 +254,7 @@
         height: 40px;
         border: 1px solid #eaeaea;
         background: #eaeaea;
+        -webkit-box-shadow: none;
         box-shadow: none;
         padding: 0 10px;
     }
@@ -262,20 +274,29 @@
     .Choice{
         height: 50px;
         width: 150px;
+        display: -webkit-box;
+        display: -ms-flexbox;
         display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
         justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
         align-items: center;
         cursor: pointer;
         border: none;
+        -webkit-transition: ease-in-out 0.5s;
+        -o-transition: ease-in-out 0.5s;
         transition: ease-in-out 0.5s;
     }
     .ChoiceOn{
         background: #fc8507;
         color: white;
+        -webkit-box-shadow: none;
         box-shadow: none;
     }
     .mapWrapper{
-        height: 200px;
+        height: 215px;
         position: relative;
     }
     .selfAdress{
@@ -308,7 +329,11 @@
         margin: 0px 30px 0px 10px;
     }
     .sumbit{
+        display: -webkit-box;
+        display: -ms-flexbox;
         display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
         align-items: center;
     }
     b{
@@ -316,6 +341,9 @@
         font-size: 110%;
     }
     .HappyWrapper{
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
         flex-direction: column;
         height: 100%;
     }
@@ -329,13 +357,17 @@
         }
         .window{
             position: block;
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            border-radius: 0;
+            width: calc(100% - 35px);
+            height: calc(100% - 35px);
+            padding: 0px 5px 5px 5px;
         }
         form{
+            display: -webkit-box;
+            display: -ms-flexbox;
             display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
             flex-direction: column;
             height: calc(100% - 5px);
             overflow: auto;
@@ -346,7 +378,12 @@
         }
         .sumbit{
             margin: 0 0 10px 0;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
             flex-direction: column;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
             align-items: center;
         }
         .buttun{
@@ -368,5 +405,4 @@
             height: 100px;
         }
     }
-
 </style>

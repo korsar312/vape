@@ -148,12 +148,15 @@
     }
     .Catal_wrap{
         width: 820px;
-        min-height: 400px;
+        min-height: 380px;
         height: calc(100vh - 220px);
         overflow: auto;
+        -ms-flex-wrap: wrap;
         flex-wrap: wrap;
     }
     .Catal_shop_shop{
+        display: -webkit-box;
+        display: -ms-flexbox;
         display: flex;
         min-height: 400px;
         height: calc(100vh - 200px)
@@ -181,10 +184,14 @@
         border-bottom: 1px solid #222222;
         left: 34px;
         top: 17px;
+        -webkit-transform: rotateZ(45deg);
+        -ms-transform: rotate(45deg);
         transform: rotateZ(45deg);
     }
     .Catal_shop_shop_filt_category_arrow{
         top: 22px;
+        -webkit-transform: rotateZ(225deg);
+        -ms-transform: rotate(225deg);
         transform: rotateZ(225deg);
     }
     .Catal_shop_shop_filt_category_inner{
@@ -193,6 +200,8 @@
     .Catal_inner{
         height: 60px;
         opacity: 1;
+        -webkit-transition: height ease-in-out 0.3s, opacity ease-in-out 0.3s 0.3s, margin ease-in-out 0.3s;
+        -o-transition: height ease-in-out 0.3s, opacity ease-in-out 0.3s 0.3s, margin ease-in-out 0.3s;
         transition: height ease-in-out 0.3s, opacity ease-in-out 0.3s 0.3s, margin ease-in-out 0.3s;
         margin: 5px 20px;
     }
@@ -202,10 +211,13 @@
     .Catal_innerON{
         height: 0px;
         opacity: 0;
+        -webkit-transition: height ease-in-out 0.3s 0.3s, opacity ease-in-out 0.3s, margin ease-in-out 0.3s 0.3s;
+        -o-transition: height ease-in-out 0.3s 0.3s, opacity ease-in-out 0.3s, margin ease-in-out 0.3s 0.3s;
         transition: height ease-in-out 0.3s 0.3s, opacity ease-in-out 0.3s, margin ease-in-out 0.3s 0.3s;
         margin: 0px;
     }
     .Catal_contaiter2{
+        -webkit-box-shadow: none;
         box-shadow: none;
         padding: 0 15px;
         height: 30px;
@@ -218,12 +230,18 @@
         color: white;
         background: #fc8507;
         border: none;
+        -webkit-transition: ease-in-out 0.2s;
+        -o-transition: ease-in-out 0.2s;
         transition: ease-in-out 0.2s;
     }
     .beginFilt:hover{
+        -webkit-transform: scale(0.97);
+        -ms-transform: scale(0.97);
         transform: scale(0.97);
     }
     .beginFilt:active{
+        -webkit-transform: scale(0.85);
+        -ms-transform: scale(0.85);
         transform: scale(0.85);
     }
     @media all and (max-width: 1140px) {
@@ -238,6 +256,8 @@
             margin: 0;
             z-index: 2;
             overflow: visible;
+            -webkit-transition: ease-in-out 0.3s;
+            -o-transition: ease-in-out 0.3s;
             transition: ease-in-out 0.3s;
         }
         .hideCateg{
@@ -264,14 +284,23 @@
             top: calc(50% - 12px);
             border-right: 4px solid white;
             border-top: 4px solid white;
+            -webkit-transform: rotateZ(-135deg);
+            -ms-transform: rotate(-135deg);
             transform: rotateZ(-135deg);
+            -webkit-transition: ease-in-out 0.3s;
+            -o-transition: ease-in-out 0.3s;
             transition: ease-in-out 0.3s;
         }
         .main_filtConteinerConstructOff{
             left: calc(50% - 10px);
+            -webkit-transform: rotateZ(-135deg) scale(-1, -1);
+            -ms-transform: rotate(-135deg) scale(-1, -1);
             transform: rotateZ(-135deg) scale(-1, -1);
         }
         .filtAdapt{
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
             flex-direction: column;
         }
         .beginFilt{
@@ -289,14 +318,21 @@
     @media all and (max-width: 820px) {
         .Catal_wrap {
             width: calc(100vw - 25px);
+            min-height:100px;
             height: calc((var(--vh, 1vh) * 100) - 135px);
         }
         .Catal_shop_shop {
             display: block;
         }
         .adapt{
+            display: -webkit-box;
+            display: -ms-flexbox;
             display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
             justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
             align-items: center;
             height: 50px;
             font-size: 17pt

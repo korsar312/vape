@@ -34,9 +34,13 @@ const store = createStore({
 
             heightBrouser: null,
             detailItem: {},
-            showOrdering: false,
-            showDetailItem: false,
-            showOld: true,
+
+            showAny:{
+                showOrdering: false,
+                showDetailItem: false,
+                showOld: true,
+            },
+
             item: {
                 liquid: {
                     name(){return 'Жидкость'},
@@ -622,6 +626,97 @@ const store = createStore({
                         },
                     ]
                 },
+                pods: {
+                    name(){return 'Одноразовые поды'},
+                    link(){return '/catalogue/pods'},
+                    categ(){
+                        return [
+                            ['strength', 'Крепость'],
+                        ]
+                    },
+                    items: [
+                        {
+                            name: 'Puff bar',
+                            img: '/pods_Puff bar.jpg',
+                            strength: '',
+                            price: 1111111,
+                            id: '04001',
+                            descript: 'Puff bar - одноразовая под система обладающая достаточно неплохой вкусопередачей и большим количеством пуфоф. Хорошее сочетание цены-качества !',
+                        },
+                        {
+                            name: 'HQD Mega',
+                            img: '/pods_HQD Mega.jpg',
+                            strength: '',
+                            price: 1111111,
+                            id: '04002',
+                            descript: 'HQD Mega - новейшее творение мастеров из одноименной компании, обладающее огромным количеством затяжек (официально заявлены 1800) и невероятной вкусовой гаммой !',
+                        },
+                        {
+                            name: 'Imba',
+                            img: '/pods_Imba.jpg',
+                            strength: '',
+                            price: 1111111,
+                            id: '04003',
+                            descript: 'Imba - великолепный под с ресурсом в 1600 затяг, аккумулятором на 1000 МАХ, и очень яркими вкусами',
+                        },
+                        {
+                            name: 'HQD Cuvie plus',
+                            img: '/pods_HQD Cuvie plus.jpg',
+                            strength: '',
+                            price: 1111111,
+                            id: '04004',
+                            descript: 'HQD Cuvie plus - мощный, крепкий, невероятно вкусный одноразовый под на 1200 тяжек от известного производителя. Качество на высшем уровне !',
+                        },
+                        {
+                            name: 'Cali Bars',
+                            img: '/pods_Cali Bars.jpg',
+                            strength: '',
+                            price: 1111111,
+                            id: '04005',
+                            descript: 'Cali Bars - бюджетная одноразовая под система. 400 затяжек, посредственные вкусы.',
+                        },
+                        {
+                            name: 'MaskKing PRO series',
+                            img: '/pods_MaskKing PRO series.jpg',
+                            strength: '',
+                            price: 1111111,
+                            id: '04006',
+                            descript: 'MaskKing PRO series - 1000 затяжек и достаточно большая вкусовая коллекция и яркие вкусовые сочетания',
+                        },
+                        {
+                            name: 'HQD Ultra stick',
+                            img: '/pods_HQD Ultra stick.jpg',
+                            strength: '',
+                            price: 1111111,
+                            id: '04007',
+                            descript: 'HQD Ultra stick - 500 затяжек и очень яркие вкусы от легендарного производителя. Качество на высшем уровне !',
+                        },
+                        {
+                            name: 'EGoing',
+                            img: '/pods_EGoing.jpg',
+                            strength: '',
+                            price: 1111111,
+                            id: '04008',
+                            descript: 'EGoing- очень вкусная, качественная коллекция одноразовых под систем. 800 затяг и большая вкусовая палитра',
+                        },
+                        {
+                            name: 'Inhale Guliver',
+                            img: '/pods_Inhale Guliver.jpg',
+                            strength: '',
+                            price: 1111111,
+                            id: '04009',
+                            descript: 'Inhale Guliver - 1600 тяг и неплохие вкусовые композиции в оригинальном дизайне',
+                        },
+                        {
+                            name: 'IPlay Max',
+                            img: '/pods_.jpg',
+                            strength: '',
+                            price: 1111111,
+                            id: '04010',
+                            descript: 'IPlay Max - 2000 тяг, невероятно живучие аккумуляторы и дичайшие качество вкусопередачи- рекомендуем',
+                        },
+                    ]
+                },
             },
             itemInBasket:[],
             itemDiscont:[],
@@ -651,15 +746,15 @@ const store = createStore({
         },
 
         show(state){
-            state.showOrdering = !state.showOrdering
+            state.showAny.showOrdering = !state.showAny.showOrdering
         },
         showDetailItem(state, item){
             state.detailItem = item
-            state.showDetailItem = true
+            state.showAny.showDetailItem = true
         },
         showDetailItemOff(state){
             state.detailItem = {}
-            state.showDetailItem = false
+            state.showAny.showDetailItem = false
         },
         addBasket(state, item){
             let bas = state.itemInBasket
@@ -668,6 +763,7 @@ const store = createStore({
                     item.amount++
                     return
                 }
+                item.amount = 1
             }
             item.amount = 1
             bas.push(item)
@@ -687,7 +783,7 @@ const store = createStore({
         },
         getOld(state){
             let old = sessionStorage.getItem('old')
-            if (old == 'true'){state.showOld = false}
+            if (old == 'true'){state.showAny.showOld = false}
         },
         setOld(){
             sessionStorage.setItem('old', 'true')

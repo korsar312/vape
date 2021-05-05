@@ -1,8 +1,8 @@
 <template>
 
-  <YouOld v-if="$store.state.showOld"/>
-  <Ordering v-if="$store.state.showOrdering"/>
-  <ItemOpen v-show="$store.state.showDetailItem"/>
+  <YouOld v-if="$store.state.showAny.showOld"/>
+  <Ordering v-if="$store.state.showAny.showOrdering"/>
+  <ItemOpen v-show="$store.state.showAny.showDetailItem"/>
 
 
   <Header />
@@ -34,6 +34,7 @@
   },
   computed:{
   },
+
   mounted() {
     let vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -46,6 +47,20 @@
     window.addEventListener('resize', () => {
       this.$store.state.heightBrouser = window.innerHeight;
     });
+
+
+
+    let r = this.$store.state.showAny
+    window.onpopstate = function() {
+      setTimeout(()=>{
+        for(let i in r){
+          if(i == 'showOld'){continue}
+          r[i] = false
+        }
+      },0,r)
+    };
+
+
 
 
     this.$store.commit("getOld")

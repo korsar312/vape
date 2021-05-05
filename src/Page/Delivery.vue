@@ -21,6 +21,9 @@
 
 <style scoped>
     .wrapper{
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
         flex-direction: column;
     }
     .info{
@@ -46,13 +49,18 @@
             position: absolute;
             width: 100%;
             height: calc(100% - 70px);
+            display: -webkit-box;
+            display: -ms-flexbox;
             display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
             justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
             align-items: center;
         }
         .info{
             width: calc(100vw - 20px);
         }
     }
-
 </style>
