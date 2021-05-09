@@ -194,6 +194,7 @@
     .window2{
         margin-bottom: 35px;
         overflow: auto;
+        height: calc((var(--vh, 1vh) * 100) - 70px);
     }
     .ras{
         margin: 15px;
@@ -213,6 +214,7 @@
         font-size: 16pt;
         -webkit-box-shadow: none;
         box-shadow: none;
+        text-align: center;
     }
     .img{
         width: 100%;

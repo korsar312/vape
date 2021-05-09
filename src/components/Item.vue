@@ -126,6 +126,7 @@
         height: 150px;
         border-radius: 15px;
         position: relative;
+        -webkit-mask-image: -webkit-radial-gradient(white, black);
     }
 
     .img{
@@ -139,8 +140,9 @@
             position: absolute;
             top: calc(0px);
             color: black;
-            width: calc(100%);
-            padding: 2px 5px;
+            width: calc(70%);
+            border-radius: 0  0 50% 50%;
+            padding: 2px 5px 5px 5px;
             opacity: 0.6;
             transition: ease-in-out 0.3s;
             cursor: pointer;
@@ -255,11 +257,6 @@
 
     }
 
-    @media all and (max-width: 820px) {
-        .name{
-            opacity: 0.8;
-        }
-    }
     @media all and (max-width: 420px) {
         .card{
             transform: scale(0.8);

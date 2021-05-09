@@ -69,6 +69,7 @@
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
+        -webkit-mask-image: -webkit-radial-gradient(white, black);
 
     }
     .wrap{
